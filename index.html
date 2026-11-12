@@ -13,14 +13,6 @@
 
   <!-- Embedded Standalone Cyber Theme CSS (Guarantees styling renders everywhere without CDNs) -->
   <style>
-/* ==========================================================================
-   Web T.R.A.C.E — Standalone Zero-CDN Cyber Design System & Tailwind Compatibility
-   Web T.R.A.C.E Security Platform
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. CSS Reset & Typography
-   -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -51,21 +43,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
+
 
 /* --------------------------------------------------------------------------
    2. Core Utility Classes (Tailwind Compatibility)
@@ -470,28 +448,28 @@ button:disabled {
 }
 
 /* FontAwesome Unicode Fallbacks when CDN is unreachable */
-.fa-shield-halved::before { content: "🛡"; }
-.fa-magnifying-glass::before { content: "🔍"; }
-.fa-list-check::before { content: "📋"; }
-.fa-chart-line::before { content: "📈"; }
-.fa-circle-info::before { content: "ℹ️"; }
-.fa-arrows-rotate::before { content: "🔄"; }
-.fa-bolt::before { content: "⚡"; }
-.fa-clipboard::before { content: "📋"; }
-.fa-circle-check::before { content: "✅"; }
-.fa-triangle-exclamation::before { content: "⚠️"; }
-.fa-skull-crossbones::before { content: "☠️"; }
-.fa-mask::before { content: "🎭"; }
-.fa-bug::before { content: "🪲"; }
-.fa-xmark::before { content: "✕"; }
-.fa-file-arrow-down::before { content: "📥"; }
-.fa-play::before { content: "▶"; }
-.fa-dna::before { content: "🧬"; }
-.fa-microchip::before { content: "⚙️"; }
-.fa-user-lock::before { content: "🔒"; }
-.fa-stethoscope::before { content: "🩺"; }
-.fa-traffic-light::before { content: "🚦"; }
-.fa-shield-virus::before { content: "🛡️"; }
+.fa-shield-halved::before { content: ""; }
+.fa-magnifying-glass::before { content: ""; }
+.fa-list-check::before { content: ""; }
+.fa-chart-line::before { content: ""; }
+.fa-circle-info::before { content: ""; }
+.fa-arrows-rotate::before { content: ""; }
+.fa-bolt::before { content: ""; }
+.fa-clipboard::before { content: ""; }
+.fa-circle-check::before { content: ""; }
+.fa-triangle-exclamation::before { content: ""; }
+.fa-skull-crossbones::before { content: ""; }
+.fa-mask::before { content: ""; }
+.fa-bug::before { content: ""; }
+.fa-xmark::before { content: ""; }
+.fa-file-arrow-down::before { content: ""; }
+.fa-play::before { content: ""; }
+.fa-dna::before { content: ""; }
+.fa-microchip::before { content: ""; }
+.fa-user-lock::before { content: ""; }
+.fa-stethoscope::before { content: ""; }
+.fa-traffic-light::before { content: ""; }
+.fa-shield-virus::before { content: ""; }
 
 /* Chart fallback container */
 #trust-gauge-chart {
@@ -645,15 +623,14 @@ button:disabled {
       
       <!-- Brand Logo & Project Identification -->
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-teal-500/25">
+        <!-- <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-teal-500/25">
           <i class="fa-solid fa-shield-halved text-slate-950 text-xl"></i>
-        </div>
+        </div> -->
         <div>
           <div class="flex items-center space-x-2">
             <h1 class="font-extrabold text-lg text-white tracking-tight">Web <span class="text-teal-400">T.R.A.C.E</span></h1>
-            <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Zero-Scraping AI</span>
           </div>
-          <p class="text-xs text-slate-400">Multi-Level Website Trustworthiness Prediction & Risk Triage</p>
+          <p class="text-xs text-slate-400"></p>
         </div>
       </div>
 
@@ -679,12 +656,12 @@ button:disabled {
         </nav>
 
         <!-- Current Role Indicator -->
-        <div id="role-pill" class="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl text-xs">
+        <!-- <div id="role-pill" class="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl text-xs">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span class="text-slate-300 font-medium">Role: <span id="current-role" class="text-teal-400 font-semibold">User</span></span>
           <button onclick="toggleRole()" title="Switch between User and Admin views" class="text-slate-400 hover:text-white ml-1">
             <i class="fa-solid fa-arrows-rotate text-xs"></i>
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -703,15 +680,15 @@ button:disabled {
         <div class="absolute -right-20 -top-20 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-3xl space-y-4">
-          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300">
-            <i class="fa-solid fa-bolt text-teal-400"></i>
-            <span>Instant Zero-Scraping Evaluation (&lt;15ms) • Calibrated Trust Score • 3-Tier Risk Triage</span>
-          </div>
+          <!-- <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300">
+             <i class="fa-solid fa-bolt text-teal-400"></i> 
+             <span>Instant Zero-Scraping Evaluation (&lt;15ms) • Calibrated Trust Score • 3-Tier Risk Triage</span> 
+          </div> -->
           <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
             Analyze Website Trustworthiness & Threat Risk
           </h2>
           <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-            Enter any target URL. Web T.R.A.C.E extracts 17 audited lexical, structural, and brand-impersonation indicators to predict a reliable 0–100 Website Trust Score and assign an automated 3-tier risk decision.
+            Enter any target URL. 
           </p>
         </div>
 
@@ -725,14 +702,13 @@ button:disabled {
                 <i class="fa-solid fa-link text-sm"></i>
               </div>
               <input type="text" id="url-input" placeholder="Enter or paste target URL (e.g., https://paypal.com.verify-billing.tk/login)..." class="url-input-field" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleScanSubmit(event);}" autocomplete="off">
-              <button
+              <!-- <button
                 type="button"
                 onclick="pasteFromClipboard()"
                 class="url-paste-btn"
                 title="Paste URL from Clipboard"
-              >
-                <i class="fa-regular fa-clipboard"></i>
-                <span>Paste</span>
+               <i class="fa-regular fa-clipboard"></i>
+                <span>Paste</span> -->
               </button>
             </div>
 
@@ -759,37 +735,8 @@ button:disabled {
 
             <!-- Submit Button -->
             <button type="button" id="scan-button" onclick="handleScanSubmit(event)" class="scan-submit-btn" title="Execute Zero-Scraping Feature Extraction & Risk Inference">
-              <i class="fa-solid fa-shield-virus text-slate-950"></i>
+              <!-- <i class="fa-solid fa-shield-virus text-slate-950"></i> -->
               <span>Inspect URL</span>
-            </button>
-          </div>
-
-          <!-- Quick Test URL Pills -->
-          <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
-            <span class="text-slate-400 font-medium">Quick Test Cases:</span>
-            <button type="button" onclick="loadSampleUrl('https://www.google.com')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center space-x-1">
-              <i class="fa-solid fa-check text-emerald-400 text-[10px]"></i>
-              <span>Google (Legit)</span>
-            </button>
-            <button type="button" onclick="loadSampleUrl('https://en.wikipedia.org/wiki/Phishing')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center space-x-1">
-              <i class="fa-solid fa-check text-emerald-400 text-[10px]"></i>
-              <span>Wikipedia (Deep Path Legit)</span>
-            </button>
-            <button type="button" onclick="loadSampleUrl('https://paypal.com.verify-billing.tk/login?token=123')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
-              <i class="fa-solid fa-skull-crossbones text-rose-400 text-[10px]"></i>
-              <span>Brand Spoof in Subdomain (.tk)</span>
-            </button>
-            <button type="button" onclick="loadSampleUrl('http://192.168.1.1/secure/bank/login')" class="px-2.5 py-1 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 border border-amber-800/50 transition flex items-center space-x-1">
-              <i class="fa-solid fa-triangle-exclamation text-amber-400 text-[10px]"></i>
-              <span>Direct IP Host</span>
-            </button>
-            <button type="button" onclick="loadSampleUrl('http://paypa1-account-security.com/signin')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
-              <i class="fa-solid fa-mask text-rose-400 text-[10px]"></i>
-              <span>Homoglyph Typosquat (paypa1)</span>
-            </button>
-            <button type="button" onclick="loadSampleUrl('https://update%2Daccount%2Dsecurity%40paypal.info/auth')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
-              <i class="fa-solid fa-bug text-rose-400 text-[10px]"></i>
-              <span>Hex Percent-Encoding Evasion</span>
             </button>
           </div>
         </form>
@@ -1177,8 +1124,8 @@ button:disabled {
   <!-- Footer -->
   <footer class="bg-slate-900/60 border-t border-slate-800/80 py-6 mt-auto text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 space-y-1">
-      <p>Web T.R.A.C.E — Zero-Scraping Phishing Detection & Operational Risk Triage System</p>
-      <p>Multi-Level Website Trustworthiness Prediction & Cybersecurity Risk Assessment • Flask & PyTorch / Scikit-Learn</p>
+      <!-- <p>Web T.R.A.C.E — Zero-Scraping Phishing Detection & Operational Risk Triage System</p> -->
+      <!-- <p>Multi-Level Website Trustworthiness Prediction & Cybersecurity Risk Assessment • Flask & PyTorch / Scikit-Learn</p> -->
     </div>
   </footer>
 
@@ -1733,7 +1680,7 @@ if (window.__WEB_TRACE_LOADED__) {
       banner.classList.add("bg-gradient-to-r", "from-rose-950/60", "to-slate-900", "border-rose-700/60", "risk-glow-red");
       if (iconBox) {
         iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-rose-500 text-white";
-        iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation">⚠️</i>';
+        iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"> </i>';
       }
       if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30";
       if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-rose-900/60 text-rose-200 border border-rose-700";
@@ -1742,7 +1689,7 @@ if (window.__WEB_TRACE_LOADED__) {
       banner.classList.add("bg-gradient-to-r", "from-amber-950/60", "to-slate-900", "border-amber-700/60", "risk-glow-yellow");
       if (iconBox) {
         iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-amber-500 text-slate-950";
-        iconBox.innerHTML = '<i class="fa-solid fa-shield-virus">🛡️</i>';
+        iconBox.innerHTML = '<i class="fa-solid fa-shield-virus"></i>';
       }
       if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
       if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-amber-900/60 text-amber-200 border border-amber-700";
@@ -1751,7 +1698,7 @@ if (window.__WEB_TRACE_LOADED__) {
       banner.classList.add("bg-gradient-to-r", "from-emerald-950/60", "to-slate-900", "border-emerald-700/60", "risk-glow-green");
       if (iconBox) {
         iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-emerald-500 text-slate-950";
-        iconBox.innerHTML = '<i class="fa-solid fa-circle-check">✅</i>';
+        iconBox.innerHTML = '<i class="fa-solid fa-circle-check"> </i>';
       }
       if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
       if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-emerald-900/60 text-emerald-200 border border-emerald-700";
@@ -1899,7 +1846,7 @@ if (window.__WEB_TRACE_LOADED__) {
       item.className = "p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start space-x-3";
       
       let icon = "fa-circle-info text-blue-400";
-      let symbol = "ℹ️";
+      let symbol = "";
       if (f.severity === "CRITICAL" || f.severity === "HIGH") {
         icon = "fa-triangle-exclamation text-rose-400";
         symbol = "⚠️";
@@ -1908,7 +1855,7 @@ if (window.__WEB_TRACE_LOADED__) {
         symbol = "⚡";
       } else if (f.severity === "SAFE") {
         icon = "fa-circle-check text-emerald-400";
-        symbol = "✅";
+        symbol = "";
       }
 
       item.innerHTML = `

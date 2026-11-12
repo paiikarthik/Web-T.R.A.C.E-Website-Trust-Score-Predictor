@@ -597,12 +597,37 @@ def predict_single_url(raw_url: str, model_name: str = "Ensemble_Calibrated_Soft
     # 2. Model Dispatch
     model = get_model(model_name)
 
-    # Scale if linear / deep model
-    if model_name in ("ML_LogisticRegression", "ML_LinearSVM", "DL_DeepMLP", "DL_CNN1D", "DL_LSTM", "DL_Hybrid_CNNLSTM", "DL_SelfAttention"):
-        scaler = get_scaler()
-        input_data = scaler.transform(feat_df) if scaler else feat_df.values
+    # Detect expected columns from model or pipeline steps to avoid feature mismatches
+    expected_cols = None
+    if hasattr(model, "feature_names_in_"):
+        expected_cols = list(model.feature_names_in_)
+    elif hasattr(model, "named_steps") and "preprocess" in model.named_steps:
+        prep = model.named_steps["preprocess"]
+        if hasattr(prep, "feature_names_in_"):
+            expected_cols = list(prep.feature_names_in_)
+        elif hasattr(prep, "named_steps") and "imputer" in prep.named_steps:
+            expected_cols = getattr(prep.named_steps["imputer"], "feature_names_in_", None)
+
+    if expected_cols is not None:
+        matched_cols = [c for c in expected_cols if c in feat_df.columns]
+        input_df = feat_df[matched_cols].copy()
+        for c in expected_cols:
+            if c not in input_df.columns:
+                input_df[c] = 0.0
+        input_df = input_df[expected_cols]
     else:
-        input_data = feat_df
+        input_df = feat_df.copy()
+
+    is_pipeline = hasattr(model, "steps") or hasattr(model, "named_steps")
+
+    # Scale if linear / deep model and NOT already wrapped in an sklearn Pipeline
+    if is_pipeline:
+        input_data = input_df
+    elif model_name in ("ML_LogisticRegression", "ML_LinearSVM", "DL_DeepMLP", "DL_CNN1D", "DL_LSTM", "DL_Hybrid_CNNLSTM", "DL_SelfAttention"):
+        scaler = get_scaler()
+        input_data = scaler.transform(input_df) if scaler and hasattr(scaler, "transform") else input_df.values
+    else:
+        input_data = input_df
 
     # Obtain calibrated phishing probability
     if hasattr(model, "predict_proba"):

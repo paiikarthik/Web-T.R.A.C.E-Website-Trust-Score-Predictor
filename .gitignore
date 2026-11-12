@@ -1,2 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Trained models, logs, metrics, figures, reports, and caches
 outputs/
-__pychache__/
+
+# Research papers and reference documents
+cited_research_papers/
+*.pdf
+
+# Environment and IDE settings
+.vscode/
+.idea/
+.venv/
+env/
+venv/

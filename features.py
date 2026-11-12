@@ -56,7 +56,7 @@ SUSPICIOUS_KEYWORDS: tuple[str, ...] = (
     "login", "signin", "verify", "verification", "account", "update",
     "banking", "secure", "security", "webscr", "confirm", "password",
     "wallet", "admin", "service", "support", "billing", "auth",
-    "ebayisapi", "paypal", "apple", "microsoft", "google", "netflix"
+    "ebayisapi"
 )
 
 SUSPICIOUS_TLDS: set[str] = {

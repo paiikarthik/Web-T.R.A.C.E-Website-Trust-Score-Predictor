@@ -1,0 +1,4 @@
+count,count
+LOW (Safe / Allow),23983
+MEDIUM (Suspicious / Step-Up Auth),11539
+HIGH (Critical / Quarantine),11110

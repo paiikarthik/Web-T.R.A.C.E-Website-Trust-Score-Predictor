@@ -1,0 +1,6 @@
+Stage,Coverage (%),Accuracy (%)
+Stage 1 Alone (Full Test Set),100.0,90.33
+Stage 1 Confident Subset (P < 0.3 or P > 0.7),93.73,92.59
+Ambiguous Subset (0.3 <= P <= 0.7) URL Alone,6.27,60.55
+Ambiguous Subset with Stage 2 HTML Inspection,6.27,99.56
+Full Hybrid Pipeline (Stage 1 + Stage 2),100.0,93.03

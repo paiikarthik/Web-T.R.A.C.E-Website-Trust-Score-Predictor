@@ -1,0 +1,32 @@
+{
+  "dataset": "PhiUSIIL_Phishing_URL_Dataset.csv",
+  "evaluation_mode": "honest_domain",
+  "n_rows_after_clean": 235370,
+  "n_features": 14,
+  "features": [
+    "DomainLength",
+    "IsDomainIP",
+    "TLDLength",
+    "NoOfSubDomain",
+    "HasObfuscation",
+    "NoOfObfuscatedChar",
+    "netloc_entropy",
+    "hyphen_domain",
+    "dot_domain",
+    "kw_count",
+    "has_kw",
+    "is_susp_tld",
+    "digits_domain",
+    "digit_ratio_domain"
+  ],
+  "torch_available": true,
+  "positive_class": "phishing (y=1); original label 0",
+  "drop_derived_features": true,
+  "drop_is_https": true,
+  "drop_shortcut_features": true,
+  "url_only_features": true,
+  "quick_demo": false,
+  "test_size": 0.2,
+  "cv_folds": 5,
+  "random_state": 42
+}

@@ -1,0 +1,4 @@
+Slice,Sample Count,Phishing Prevalence (%),Accuracy (%),Precision (%),Recall (%),F1-Score (%)
+"Free-Hosting Platforms (github.io, web.app, etc.)",3754,100.0,100.0,100.0,100.0,100.0
+Standard Registered Domains,43363,38.19,89.5,91.66,79.75,85.29
+Overall Test Set,47117,43.11,90.33,93.38,83.49,88.16

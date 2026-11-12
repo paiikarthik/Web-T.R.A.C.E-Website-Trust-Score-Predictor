@@ -1,0 +1,13 @@
+Attack_Technique_or_Structural_Pattern,Phishing_Prevalence_Pct,Legitimate_Prevalence_Pct,Risk_Ratio_Phish_vs_Legit
+"High-Risk Disposable TLDs (.tk, .ml, .xyz, etc.)",11.87890625,0.9709302325581395,12.233405152283717
+Direct IP Address Hosting,0.6875,0.0,6876.0
+Brand Impersonation in Subdomain,0.9375,0.014534883720930232,64.06610519624981
+Brand Impersonation in Non-Official Domain,0.7890625,0.08430232558139535,9.350008954894884
+Brand Lure in URL Path,0.6015625,0.0,6016.625
+Homoglyph Typosquatting Match,0.00390625,0.0,40.0625
+"Credential Phishing Keywords (login, verify, etc.)",10.859375,0.5377906976744187,20.18899945091291
+Deep Directory Path Concealment (depth >= 2),16.3671875,0.0,163672.875
+Query Parameter Injection (count >= 1),6.1484375,0.0,61485.37499999999
+URL Percent-Encoding Evasion (%XX >= 1),0.91796875,0.0,9180.6875
+High Domain Shannon Entropy (> 3.8 bits),33.93359375,6.174418604651163,5.495763463152952
+High Domain Numeric Density (> 20% digits),12.9296875,0.2441860465116279,52.928882695657975

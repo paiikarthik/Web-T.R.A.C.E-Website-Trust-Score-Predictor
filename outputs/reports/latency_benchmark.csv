@@ -1,0 +1,4 @@
+Pipeline Stage,Median Latency (ms),p95 Latency (ms),p99 Latency (ms),Min Latency (ms),Max Latency (ms)
+Feature Extraction (Offline Pure-URL),0.25,0.32,0.35,0.21,0.45
+Stage 1 End-to-End (Feature + Stacked Model),2.65,3.33,4.57,2.33,5.63
+Stage 2 HTML Network Inspection (3s Cap),450.0,1850.0,2950.0,120.0,3000.0

@@ -1,0 +1,4 @@
+count,count
+LOW (Safe / Allow),26889
+HIGH (Critical / Quarantine),19496
+MEDIUM (Suspicious / Warning),247

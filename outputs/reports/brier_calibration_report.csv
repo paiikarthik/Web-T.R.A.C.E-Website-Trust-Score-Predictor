@@ -1,0 +1,3 @@
+Condition,Brier Score,ECE
+Uncalibrated Ensemble,0.0736,0.0123
+Isotonic Calibrated Ensemble,0.0738,0.009

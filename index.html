@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web T.R.A.C.E — Multi-Level Website Trustworthiness & Risk Assessment</title>
+  
+  <!-- CSS Stylesheets (Multiple paths for Flask server and direct file:// opening) -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../static/css/style.css">
+
+  <!-- Embedded Standalone Cyber Theme CSS (Guarantees styling renders everywhere without CDNs) -->
+  <style>
+/* ==========================================================================
+   Web T.R.A.C.E — Standalone Zero-CDN Cyber Design System & Tailwind Compatibility
+   Web T.R.A.C.E Security Platform
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Reset & Typography
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #020617;
+  color: #f1f5f9;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at 50% 0%, #0d1527 0%, #020617 75%);
+  color: #f1f5f9;
+}
+
+a {
+  color: #2dd4bf;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* --------------------------------------------------------------------------
+   2. Core Utility Classes (Tailwind Compatibility)
+   -------------------------------------------------------------------------- */
+.hidden { display: none !important; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1 1 0%; }
+.shrink-0 { flex-shrink: 0; }
+
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.justify-start { justify-content: flex-start; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.top-0 { top: 0; }
+.z-50 { z-index: 50; }
+.z-10 { z-index: 10; }
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-x-auto { overflow-x: auto; }
+
+/* Grid columns */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+@media (min-width: 768px) {
+  .md\:flex { display: flex; }
+  .md\:flex-row { flex-direction: row; }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:p-8 { padding: 2rem; }
+  .md\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .lg\:col-span-4 { grid-column: span 4 / span 4; }
+  .lg\:col-span-5 { grid-column: span 5 / span 5; }
+  .lg\:col-span-7 { grid-column: span 7 / span 7; }
+  .lg\:col-span-8 { grid-column: span 8 / span 8; }
+  .lg\:col-span-12 { grid-column: span 12 / span 12; }
+  .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+}
+
+/* Spacing & Gap */
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+.space-x-1 > * + * { margin-left: 0.25rem; }
+.space-x-2 > * + * { margin-left: 0.5rem; }
+.space-x-3 > * + * { margin-left: 0.75rem; }
+.space-x-4 > * + * { margin-left: 1rem; }
+.space-x-6 > * + * { margin-left: 1.5rem; }
+
+.space-y-0\.5 > * + * { margin-top: 0.125rem; }
+.space-y-1 > * + * { margin-top: 0.25rem; }
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-3 > * + * { margin-top: 0.75rem; }
+.space-y-4 > * + * { margin-top: 1rem; }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+.space-y-8 > * + * { margin-top: 2rem; }
+
+/* Width & Max Width */
+.w-full { width: 100%; }
+.w-2 { width: 0.5rem; }
+.w-3 { width: 0.75rem; }
+.w-4 { width: 1rem; }
+.w-8 { width: 2rem; }
+.w-10 { width: 2.5rem; }
+.w-12 { width: 3rem; }
+.w-16 { width: 4rem; }
+.w-20 { width: 5rem; }
+.w-64 { width: 16rem; }
+
+.h-2 { height: 0.5rem; }
+.h-3 { height: 0.75rem; }
+.h-4 { height: 1rem; }
+.h-8 { height: 2rem; }
+.h-10 { height: 2.5rem; }
+.h-12 { height: 3rem; }
+.h-16 { height: 4rem; }
+.h-20 { height: 5rem; }
+.h-64 { height: 16rem; }
+.min-h-screen { min-height: 100vh; }
+.max-h-\[75vh\] { max-height: 75vh; }
+.max-h-\[80vh\] { max-height: 80vh; }
+
+.max-w-xs { max-width: 20rem; }
+.max-w-md { max-width: 28rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-5xl { max-width: 64rem; }
+.max-w-7xl { max-width: 80rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-auto { margin-top: auto; }
+.mt-0\.5 { margin-top: 0.125rem; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.ml-1 { margin-left: 0.25rem; }
+.ml-2 { margin-left: 0.5rem; }
+.pt-1 { padding-top: 0.25rem; }
+.pt-2 { padding-top: 0.5rem; }
+.pb-2 { padding-bottom: 0.5rem; }
+.pb-3 { padding-bottom: 0.75rem; }
+
+/* Padding */
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.px-8 { padding-left: 2rem; padding-right: 2rem; }
+
+.py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
+/* Border Radius */
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* Colors: Backgrounds */
+.bg-slate-950 { background-color: #020617; }
+.bg-slate-950\/60 { background-color: rgba(2, 6, 23, 0.6); }
+.bg-slate-950\/70 { background-color: rgba(2, 6, 23, 0.7); }
+.bg-slate-950\/80 { background-color: rgba(2, 6, 23, 0.8); }
+.bg-slate-900 { background-color: #0f172a; }
+.bg-slate-900\/60 { background-color: rgba(15, 23, 42, 0.6); }
+.bg-slate-900\/80 { background-color: rgba(15, 23, 42, 0.8); }
+.bg-slate-900\/90 { background-color: rgba(15, 23, 42, 0.9); }
+.bg-slate-800 { background-color: #1e293b; }
+.bg-slate-800\/80 { background-color: rgba(30, 41, 59, 0.8); }
+.bg-slate-700 { background-color: #334155; }
+.bg-black\/80 { background-color: rgba(0, 0, 0, 0.8); }
+
+.bg-teal-500 { background-color: #14b8a6; }
+.bg-teal-500\/10 { background-color: rgba(20, 184, 166, 0.1); }
+.bg-teal-500\/20 { background-color: rgba(20, 184, 166, 0.2); }
+.bg-emerald-400 { background-color: #34d399; }
+.bg-emerald-500 { background-color: #10b981; }
+.bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.2); }
+.bg-emerald-900\/60 { background-color: rgba(6, 78, 59, 0.6); }
+.bg-amber-500 { background-color: #f59e0b; }
+.bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2); }
+.bg-amber-900\/60 { background-color: rgba(120, 53, 15, 0.6); }
+.bg-amber-950\/40 { background-color: rgba(69, 26, 3, 0.4); }
+.bg-rose-500 { background-color: #f43f5e; }
+.bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.2); }
+.bg-rose-900\/60 { background-color: rgba(136, 19, 55, 0.6); }
+.bg-rose-950\/40 { background-color: rgba(76, 5, 25, 0.4); }
+
+/* Gradients */
+.bg-gradient-to-tr { background-image: linear-gradient(to top right, #14b8a6, #34d399); }
+.bg-gradient-to-br { background-image: linear-gradient(to bottom right, #0f172a, rgba(15, 23, 42, 0.6)); }
+.bg-gradient-to-r { background-image: linear-gradient(to right, #0f172a, #020617); }
+
+/* Colors: Borders */
+.border { border: 1px solid #1e293b; }
+.border-b { border-bottom: 1px solid #1e293b; }
+.border-t { border-top: 1px solid #1e293b; }
+.border-r { border-right: 1px solid #1e293b; }
+.border-4 { border-width: 4px; border-style: solid; }
+.border-slate-800 { border-color: #1e293b; }
+.border-slate-800\/50 { border-color: rgba(30, 41, 59, 0.5); }
+.border-slate-800\/60 { border-color: rgba(30, 41, 59, 0.6); }
+.border-slate-800\/80 { border-color: rgba(30, 41, 59, 0.8); }
+.border-slate-700 { border-color: #334155; }
+.border-slate-700\/80 { border-color: rgba(51, 65, 85, 0.8); }
+.border-teal-500\/20 { border-color: rgba(20, 184, 166, 0.2); }
+.border-teal-500\/30 { border-color: rgba(20, 184, 166, 0.3); }
+.border-t-teal-400 { border-top-color: #2dd4bf; }
+.border-emerald-700 { border-color: #047857; }
+.border-emerald-500\/30 { border-color: rgba(16, 185, 129, 0.3); }
+.border-amber-700 { border-color: #b45309; }
+.border-amber-800\/50 { border-color: rgba(146, 64, 14, 0.5); }
+.border-amber-500\/30 { border-color: rgba(245, 158, 11, 0.3); }
+.border-rose-700 { border-color: #be123c; }
+.border-rose-800\/50 { border-color: rgba(159, 18, 57, 0.5); }
+.border-rose-500\/30 { border-color: rgba(244, 63, 94, 0.3); }
+
+/* Colors: Text */
+.text-white { color: #ffffff; }
+.text-slate-100 { color: #f1f5f9; }
+.text-slate-200 { color: #e2e8f0; }
+.text-slate-300 { color: #cbd5e1; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-500 { color: #64748b; }
+.text-slate-950 { color: #020617; }
+.text-teal-400 { color: #2dd4bf; }
+.text-teal-500 { color: #14b8a6; }
+.text-emerald-400 { color: #34d399; }
+.text-emerald-200 { color: #a7f3d0; }
+.text-amber-400 { color: #fbbf24; }
+.text-amber-300 { color: #fcd34d; }
+.text-amber-200 { color: #fde68a; }
+.text-rose-400 { color: #fb7185; }
+.text-rose-300 { color: #fda4af; }
+.text-rose-200 { color: #fecdd3; }
+.text-blue-400 { color: #60a5fa; }
+
+/* Typography */
+.text-\[10px\] { font-size: 10px; line-height: 14px; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+
+.font-sans { font-family: system-ui, -apple-system, sans-serif; }
+.font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+.font-black { font-weight: 900; }
+
+.uppercase { text-transform: uppercase; }
+.tracking-tight { letter-spacing: -0.025em; }
+.tracking-wide { letter-spacing: 0.025em; }
+.tracking-wider { letter-spacing: 0.05em; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.break-all { word-break: break-all; }
+.leading-normal { line-height: 1.5; }
+.leading-tight { line-height: 1.25; }
+.leading-relaxed { line-height: 1.625; }
+
+/* Interactive & Forms */
+.cursor-pointer { cursor: pointer; }
+.transition { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.backdrop-blur { backdrop-filter: blur(8px); }
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4); }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); }
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+tbody tr {
+  border-top: 1px solid rgba(30, 41, 59, 0.6);
+}
+tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   3. Custom Form Controls (Inputs, Selects, Buttons)
+   -------------------------------------------------------------------------- */
+input[type="text"], input[type="url"], select, textarea {
+  background-color: #090e1a;
+  border: 1px solid #1e293b;
+  color: #f1f5f9;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  transition: all 0.15s ease-in-out;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Quick-test button pills */
+.quick-pill, button[onclick^="loadSampleUrl"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  border: 1px solid #1e293b;
+  background-color: rgba(15, 23, 42, 0.7);
+  color: #cbd5e1;
+}
+.quick-pill:hover, button[onclick^="loadSampleUrl"]:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: #14b8a6;
+}
+
+/* Navigation tabs */
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: transparent;
+}
+.nav-tab:hover {
+  color: #ffffff;
+}
+.nav-tab.active, .nav-tab.text-white {
+  color: #ffffff;
+  background-color: #1e293b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   4. Animations & Risk Tiers
+   -------------------------------------------------------------------------- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Risk Glows */
+.risk-glow-green {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25) !important;
+}
+.risk-glow-yellow {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25) !important;
+}
+.risk-glow-red {
+  border-color: rgba(244, 63, 94, 0.6) !important;
+  box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.3) !important;
+}
+
+/* FontAwesome Unicode Fallbacks when CDN is unreachable */
+.fa-shield-halved::before { content: "🛡"; }
+.fa-magnifying-glass::before { content: "🔍"; }
+.fa-list-check::before { content: "📋"; }
+.fa-chart-line::before { content: "📈"; }
+.fa-circle-info::before { content: "ℹ️"; }
+.fa-arrows-rotate::before { content: "🔄"; }
+.fa-bolt::before { content: "⚡"; }
+.fa-clipboard::before { content: "📋"; }
+.fa-circle-check::before { content: "✅"; }
+.fa-triangle-exclamation::before { content: "⚠️"; }
+.fa-skull-crossbones::before { content: "☠️"; }
+.fa-mask::before { content: "🎭"; }
+.fa-bug::before { content: "🪲"; }
+.fa-xmark::before { content: "✕"; }
+.fa-file-arrow-down::before { content: "📥"; }
+.fa-play::before { content: "▶"; }
+.fa-dna::before { content: "🧬"; }
+.fa-microchip::before { content: "⚙️"; }
+.fa-user-lock::before { content: "🔒"; }
+.fa-stethoscope::before { content: "🩺"; }
+.fa-traffic-light::before { content: "🚦"; }
+.fa-shield-virus::before { content: "🛡️"; }
+
+/* Chart fallback container */
+#trust-gauge-chart {
+  display: block;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+
+/* ==========================================================================
+   Scanner Input Control Layout & High-Visibility Action Controls
+   ========================================================================== */
+.scanner-controls-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .scanner-controls-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.url-input-container {
+  position: relative;
+  flex: 1 1 450px;
+  min-width: 260px;
+  width: 100%;
+}
+
+.url-input-field {
+  width: 100%;
+  height: 52px;
+  padding-left: 2.75rem;
+  padding-right: 5.5rem;
+  background-color: rgba(2, 6, 23, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.85);
+  border-radius: 0.75rem;
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+.url-input-field::placeholder {
+  color: #64748b;
+}
+.url-input-field:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.4);
+  background-color: #020617;
+}
+
+.url-paste-btn {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 34px;
+  padding: 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease-in-out;
+}
+.url-paste-btn:hover {
+  color: #ffffff;
+  background-color: #334155;
+  border-color: #14b8a6;
+}
+
+.model-select-container {
+  width: 100%;
+  flex: 0 0 auto;
+}
+@media (min-width: 768px) {
+  .model-select-container {
+    width: 320px;
+    flex: 0 0 320px;
+  }
+}
+
+.model-select-field {
+  width: 100%;
+  height: 52px;
+  padding: 0 1rem;
+  background-color: rgba(2, 6, 23, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.85);
+  border-radius: 0.75rem;
+  color: #f1f5f9;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+.model-select-field:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.4);
+  background-color: #020617;
+}
+
+.scan-submit-btn {
+  width: 100%;
+  height: 52px;
+  padding: 0 1.75rem;
+  background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%) !important;
+  color: #020617 !important;
+  font-size: 0.95rem;
+  font-weight: 800 !important;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
+  transition: all 0.2s ease-in-out;
+  flex: 0 0 auto;
+}
+@media (min-width: 768px) {
+  .scan-submit-btn {
+    width: auto;
+    min-width: 160px;
+  }
+}
+.scan-submit-btn:hover {
+  background: linear-gradient(135deg, #2dd4bf 0%, #34d399 100%) !important;
+  box-shadow: 0 0 28px rgba(45, 212, 191, 0.6);
+  transform: translateY(-1px);
+}
+
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-teal-500 selection:text-white">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo & Project Identification -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-teal-500/25">
+          <i class="fa-solid fa-shield-halved text-slate-950 text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-extrabold text-lg text-white tracking-tight">Web <span class="text-teal-400">T.R.A.C.E</span></h1>
+            <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Zero-Scraping AI</span>
+          </div>
+          <p class="text-xs text-slate-400">Multi-Level Website Trustworthiness Prediction & Risk Triage</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs & Role Switcher -->
+      <div class="flex items-center space-x-3">
+        <nav class="hidden md:flex space-x-1 bg-slate-950/60 p-1 rounded-xl border border-slate-800">
+          <button onclick="switchTab('scanner')" id="tab-scanner-btn" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition text-white bg-slate-800 shadow-sm flex items-center space-x-2">
+            <i class="fa-solid fa-magnifying-glass text-teal-400"></i>
+            <span>Live Scanner</span>
+          </button>
+          <button onclick="switchTab('batch')" id="tab-batch-btn" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Batch Triage</span>
+          </button>
+          <button onclick="switchTab('benchmarks')" id="tab-benchmarks-btn" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Benchmarks & Graphs</span>
+          </button>
+          <button onclick="switchTab('architecture')" id="tab-architecture-btn" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Project Spec</span>
+          </button>
+        </nav>
+
+        <!-- Current Role Indicator -->
+        <div id="role-pill" class="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-300 font-medium">Role: <span id="current-role" class="text-teal-400 font-semibold">User</span></span>
+          <button onclick="toggleRole()" title="Switch between User and Admin views" class="text-slate-400 hover:text-white ml-1">
+            <i class="fa-solid fa-arrows-rotate text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: LIVE URL SCANNER (USER VIEW) -->
+    <!-- ================================================================= -->
+    <section id="scanner-section" class="tab-content space-y-8">
+      
+      <!-- Scanner Hero Card -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-900/60 rounded-2xl border border-slate-800 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300">
+            <i class="fa-solid fa-bolt text-teal-400"></i>
+            <span>Instant Zero-Scraping Evaluation (&lt;15ms) • Calibrated Trust Score • 3-Tier Risk Triage</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            Analyze Website Trustworthiness & Threat Risk
+          </h2>
+          <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+            Enter any target URL. Web T.R.A.C.E extracts 17 audited lexical, structural, and brand-impersonation indicators to predict a reliable 0–100 Website Trust Score and assign an automated 3-tier risk decision.
+          </p>
+        </div>
+
+        <!-- URL Input & Control Form -->
+        <form id="url-scan-form" onsubmit="handleScanSubmit(event); return false;" novalidate class="mt-8 space-y-4">
+          <div class="scanner-controls-row">
+            
+            <!-- URL Input Box with Integrated Paste Button -->
+            <div class="url-input-container">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-teal-400">
+                <i class="fa-solid fa-link text-sm"></i>
+              </div>
+              <input type="text" id="url-input" placeholder="Enter or paste target URL (e.g., https://paypal.com.verify-billing.tk/login)..." class="url-input-field" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleScanSubmit(event);}" autocomplete="off">
+              <button
+                type="button"
+                onclick="pasteFromClipboard()"
+                class="url-paste-btn"
+                title="Paste URL from Clipboard"
+              >
+                <i class="fa-regular fa-clipboard"></i>
+                <span>Paste</span>
+              </button>
+            </div>
+
+            <!-- Model Selection Dropdown -->
+            <div class="model-select-container">
+              <select
+                id="model-select"
+                class="model-select-field"
+                title="Select Machine Learning or Deep Learning Paradigm"
+              >
+                <option value="Ensemble_Calibrated_SoftVoting" selected>Calibrated Soft-Voting Ensemble (Recommended) (81.98% F1)</option>
+                <option value="ML_RandomForest">Random Forest Ensemble (79.03% F1)</option>
+                <option value="ML_XGBoost">XGBoost Gradient Boosting (78.47% F1)</option>
+                <option value="DL_DeepMLP">Deep Multi-Layer Perceptron (MLP) (78.36% F1)</option>
+                <option value="DL_LSTM">Deep Long Short-Term Memory (LSTM) (79.16% F1)</option>
+                <option value="DL_Hybrid_CNNLSTM">Hybrid CNN-LSTM Neural Network (78.89% F1)</option>
+                <option value="DL_SelfAttention">Multi-Head Self-Attention Network (78.78% F1)</option>
+                <option value="DL_CNN1D">1D Convolutional Neural Network (CNN) (78.12% F1)</option>
+                <option value="ML_DecisionTree">Decision Tree (CART) (75.12% F1)</option>
+                <option value="ML_LogisticRegression">Logistic Regression (L2) (70.14% F1)</option>
+                <option value="ML_LinearSVM">Linear Support Vector Machine (SVM) (70.01% F1)</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="scan-button" onclick="handleScanSubmit(event)" class="scan-submit-btn" title="Execute Zero-Scraping Feature Extraction & Risk Inference">
+              <i class="fa-solid fa-shield-virus text-slate-950"></i>
+              <span>Inspect URL</span>
+            </button>
+          </div>
+
+          <!-- Quick Test URL Pills -->
+          <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+            <span class="text-slate-400 font-medium">Quick Test Cases:</span>
+            <button type="button" onclick="loadSampleUrl('https://www.google.com')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center space-x-1">
+              <i class="fa-solid fa-check text-emerald-400 text-[10px]"></i>
+              <span>Google (Legit)</span>
+            </button>
+            <button type="button" onclick="loadSampleUrl('https://en.wikipedia.org/wiki/Phishing')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center space-x-1">
+              <i class="fa-solid fa-check text-emerald-400 text-[10px]"></i>
+              <span>Wikipedia (Deep Path Legit)</span>
+            </button>
+            <button type="button" onclick="loadSampleUrl('https://paypal.com.verify-billing.tk/login?token=123')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
+              <i class="fa-solid fa-skull-crossbones text-rose-400 text-[10px]"></i>
+              <span>Brand Spoof in Subdomain (.tk)</span>
+            </button>
+            <button type="button" onclick="loadSampleUrl('http://192.168.1.1/secure/bank/login')" class="px-2.5 py-1 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 border border-amber-800/50 transition flex items-center space-x-1">
+              <i class="fa-solid fa-triangle-exclamation text-amber-400 text-[10px]"></i>
+              <span>Direct IP Host</span>
+            </button>
+            <button type="button" onclick="loadSampleUrl('http://paypa1-account-security.com/signin')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
+              <i class="fa-solid fa-mask text-rose-400 text-[10px]"></i>
+              <span>Homoglyph Typosquat (paypa1)</span>
+            </button>
+            <button type="button" onclick="loadSampleUrl('https://update%2Daccount%2Dsecurity%40paypal.info/auth')" class="px-2.5 py-1 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-800/50 transition flex items-center space-x-1">
+              <i class="fa-solid fa-bug text-rose-400 text-[10px]"></i>
+              <span>Hex Percent-Encoding Evasion</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading Spinner Indicator -->
+      <div id="scan-spinner" class="hidden py-12 flex flex-col items-center justify-center space-y-3">
+        <div class="w-12 h-12 border-4 border-slate-700 border-t-teal-400 rounded-full animate-spin"></div>
+        <p class="text-slate-400 text-sm animate-pulse">Extracting 17 zero-scraping URL features and executing inference pipeline...</p>
+      </div>
+
+      <!-- Scanner Results Section (Hidden until scan completed) -->
+      <div id="scan-result-card" class="hidden space-y-6">
+
+        <!-- Top Overview Result Banner -->
+        <div id="result-banner" class="rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition shadow-2xl">
+          <div class="flex items-start space-x-4">
+            <div id="result-icon-box" class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0">
+              <!-- Dynamic Icon -->
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="prediction-badge" class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full"></span>
+                <span id="risk-tier-badge" class="px-3 py-1 text-xs font-semibold rounded-full"></span>
+                <span id="model-tag" class="px-2.5 py-0.5 text-xs text-slate-400 bg-slate-800/80 rounded-md border border-slate-700"></span>
+              </div>
+              <h3 id="result-title" class="text-xl md:text-2xl font-bold text-white pt-1"></h3>
+              <p id="result-url-text" class="text-xs text-slate-400 break-all font-mono"></p>
+            </div>
+          </div>
+
+          <!-- Dual Gauges: Website Trust Score & Risk Level -->
+          <div class="flex flex-wrap items-center gap-4 bg-slate-950/70 p-4 rounded-xl border border-slate-800 shrink-0">
+            
+            <!-- Trust Score Gauge -->
+            <div class="flex items-center space-x-3 pr-4 border-r border-slate-800">
+              <div class="relative w-20 h-20">
+                <canvas id="trust-gauge-chart" width="80" height="80"></canvas>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span id="trust-score-val" class="text-lg font-black text-emerald-400">80</span>
+                  <span class="text-[9px] uppercase font-bold text-slate-400">Trust Index</span>
+                </div>
+              </div>
+              <div class="space-y-0.5 text-left">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Website Trust Score</div>
+                <div id="trust-label" class="font-extrabold text-sm text-emerald-400">HIGH TRUST</div>
+                <div class="text-[10px] text-slate-500">ECE Calibrated (2.2%)</div>
+              </div>
+            </div>
+
+            <!-- Operational Action Recommendation -->
+            <div class="space-y-1 text-left min-w-[140px]">
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Operational Action:</div>
+              <div id="action-badge" class="font-extrabold text-sm tracking-wide"></div>
+              <div id="action-subtext" class="text-xs text-slate-400 max-w-xs leading-tight"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Free-Hosting Platform Caution Banner -->
+        <div id="free-host-alert-banner" class="hidden rounded-xl border border-amber-500/50 bg-amber-950/40 p-4 flex items-center space-x-3 text-amber-200">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl shrink-0"></i>
+          <div>
+            <div class="font-bold text-amber-300 text-sm">Free-Hosting Platform Infrastructure Flag</div>
+            <div id="free-host-warning-msg" class="text-xs text-amber-200/90 font-medium">Hosted on a free platform; the platform's reputation does not vouch for this site.</div>
+          </div>
+        </div>
+
+        <!-- Two Column Diagnostics: Explainability & Features -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Left Column: Risk Factor Diagnostics (SHAP & Rule Explainability) -->
+          <div class="lg:col-span-5 bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h4 class="font-bold text-white flex items-center space-x-2">
+                <i class="fa-solid fa-stethoscope text-teal-400"></i>
+                <span>Decision Explainability</span>
+              </h4>
+              <span class="text-xs text-slate-400 font-medium">Risk Attribution</span>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Syntactic risk factors and model attribution features that contributed to this prediction:
+            </p>
+            <div id="risk-factors-container" class="space-y-3">
+              <!-- Dynamically populated risk factors -->
+            </div>
+          </div>
+
+          <!-- Right Column: 17 Extracted Zero-Scraping Features -->
+          <div class="lg:col-span-7 bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h4 class="font-bold text-white flex items-center space-x-2">
+                <i class="fa-solid fa-dna text-teal-400"></i>
+                <span>Audited URL Feature Vector (17 Metrics)</span>
+              </h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 font-medium">Zero-Scraping Mode</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="text-slate-400 border-b border-slate-800">
+                    <th class="pb-2 font-semibold">Feature Metric</th>
+                    <th class="pb-2 font-semibold">Extracted Value</th>
+                    <th class="pb-2 font-semibold">Normal Baseline</th>
+                    <th class="pb-2 font-semibold">Risk Indicator</th>
+                  </tr>
+                </thead>
+                <tbody id="features-table-body" class="divide-y divide-slate-850">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: BATCH URL SCANNER (ADMIN / USER VIEW) -->
+    <!-- ================================================================= -->
+    <section id="batch-section" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 md:p-8 space-y-6">
+        <div>
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800 text-xs text-teal-400 border border-slate-700 mb-2">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Bulk Threat Triage</span>
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Batch URL Security Triage</h2>
+          <p class="text-slate-400 text-sm">
+            Evaluate a list of URLs simultaneously. Ideal for email gateway feeds, proxy log analysis, and threat intelligence lists.
+          </p>
+        </div>
+
+        <!-- Input Area -->
+        <div class="space-y-3">
+          <label class="block text-xs font-semibold uppercase text-slate-400 tracking-wider">
+            Enter URLs (One per line):
+          </label>
+          <textarea
+            id="batch-urls-input"
+            rows="6"
+            placeholder="https://www.google.com&#10;https://paypal.com.verify-billing.tk/login?token=123&#10;http://192.168.1.1/admin/login&#10;https://en.wikipedia.org/wiki/Phishing&#10;http://paypa1-account-security.com"
+            class="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          ></textarea>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-slate-400 font-medium">Model:</span>
+            <select id="batch-model-select" class="py-2 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+                <option value="Ensemble_Calibrated_SoftVoting" selected>Calibrated Soft-Voting Ensemble (Recommended) (81.98% F1)</option>
+                <option value="ML_RandomForest">Random Forest Ensemble (79.03% F1)</option>
+                <option value="ML_XGBoost">XGBoost Gradient Boosting (78.47% F1)</option>
+                <option value="DL_DeepMLP">Deep Multi-Layer Perceptron (MLP) (78.36% F1)</option>
+                <option value="DL_LSTM">Deep Long Short-Term Memory (LSTM) (79.16% F1)</option>
+                <option value="DL_Hybrid_CNNLSTM">Hybrid CNN-LSTM Neural Network (78.89% F1)</option>
+                <option value="DL_SelfAttention">Multi-Head Self-Attention Network (78.78% F1)</option>
+                <option value="DL_CNN1D">1D Convolutional Neural Network (CNN) (78.12% F1)</option>
+                <option value="ML_DecisionTree">Decision Tree (CART) (75.12% F1)</option>
+                <option value="ML_LogisticRegression">Logistic Regression (L2) (70.14% F1)</option>
+                <option value="ML_LinearSVM">Linear Support Vector Machine (SVM) (70.01% F1)</option>
+            </select>
+          </div>
+          <div class="flex items-center space-x-3">
+            <button
+              type="button"
+              onclick="loadSampleBatch()"
+              class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition"
+            >
+              Load Sample Batch (10 URLs)
+            </button>
+            <button
+              type="button"
+              onclick="executeBatchScan()"
+              id="batch-scan-btn"
+              class="px-6 py-2 bg-teal-500 hover:bg-teal-400 text-slate-950 rounded-xl text-xs font-bold transition shadow-lg shadow-teal-500/20 flex items-center space-x-2 cursor-pointer"
+            >
+              <i class="fa-solid fa-play"></i>
+              <span>Execute Batch Triage</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Batch Results Table -->
+      <div id="batch-results-container" class="hidden bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="font-bold text-white text-base">Batch Triage Audit Results</h3>
+            <p id="batch-summary-text" class="text-xs text-slate-400"></p>
+          </div>
+          <button
+            onclick="downloadBatchCSV()"
+            class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-teal-400 border border-slate-700 rounded-lg text-xs font-semibold transition flex items-center space-x-2"
+          >
+            <i class="fa-solid fa-file-arrow-down"></i>
+            <span>Export CSV Report</span>
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-slate-400 border-b border-slate-800">
+                <th class="py-2.5 font-semibold">#</th>
+                <th class="py-2.5 font-semibold">Analyzed URL</th>
+                <th class="py-2.5 font-semibold">Classification</th>
+                <th class="py-2.5 font-semibold">Phish Probability</th>
+                <th class="py-2.5 font-semibold">3-Tier Risk</th>
+                <th class="py-2.5 font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody id="batch-table-body" class="divide-y divide-slate-800/60 font-mono">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: BENCHMARK & METRICS DASHBOARD (ADMIN VIEW) -->
+    <!-- ================================================================= -->
+    <section id="benchmarks-section" class="tab-content hidden space-y-8">
+      
+      <!-- KPI Stats Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-1">
+          <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Test Sample Count</div>
+          <div class="text-2xl font-black text-white">46,632</div>
+          <div class="text-[11px] text-teal-400">Strict Unseen-Domain Split</div>
+        </div>
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-1">
+          <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Ensemble Accuracy</div>
+          <div class="text-2xl font-black text-emerald-400">86.41%</div>
+          <div class="text-[11px] text-slate-400">Calibrated Soft-Voting Fusion</div>
+        </div>
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-1">
+          <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Phishing Precision</div>
+          <div class="text-2xl font-black text-teal-400">92.43%</div>
+          <div class="text-[11px] text-slate-400">Minimal False Alarms</div>
+        </div>
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-1">
+          <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Calibration Error (ECE)</div>
+          <div class="text-2xl font-black text-blue-400">0.0226</div>
+          <div class="text-[11px] text-slate-400">Reliable Trust Score (Gap 4)</div>
+        </div>
+      </div>
+
+      <!-- 10-Model Benchmark Comparison Table -->
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="font-bold text-white text-base">Model Benchmark Comparison (5 ML vs 5 DL Models + Ensemble)</h3>
+            <p class="text-xs text-slate-400">Evaluated on held-out unseen domains with zero domain overlap.</p>
+          </div>
+          <span class="text-xs bg-slate-800 text-teal-400 px-3 py-1 rounded-lg border border-slate-700">Verified Leakage-Free</span>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-slate-400 border-b border-slate-800">
+                <th class="py-2.5 font-semibold">Model Name</th>
+                <th class="py-2.5 font-semibold">Architecture / Paradigm</th>
+                <th class="py-2.5 font-semibold">Accuracy</th>
+                <th class="py-2.5 font-semibold">Precision</th>
+                <th class="py-2.5 font-semibold">Recall (TPR)</th>
+                <th class="py-2.5 font-semibold">F1-Score</th>
+                <th class="py-2.5 font-semibold">ROC-AUC</th>
+                <th class="py-2.5 font-semibold">PR-AUC</th>
+                <th class="py-2.5 font-semibold">TP (Caught)</th>
+                <th class="py-2.5 font-semibold">TN (Allowed)</th>
+              </tr>
+            </thead>
+            <tbody id="benchmark-table-body" class="divide-y divide-slate-800/60 font-mono">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Metric-Annotated Figures Gallery -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-white text-lg">Metric-Annotated Experimental Figures</h3>
+            <p class="text-xs text-slate-400">Every chart embeds direct numerical values, convergence rates, and confusion counts.</p>
+          </div>
+          <span class="text-xs text-slate-400">Click any chart to zoom full-screen</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="figures-gallery">
+          <!-- Dynamically populated with all figures including Comparative Accuracy -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: SYSTEM MODELS & SRS SPECIFICATION -->
+    <!-- ================================================================= -->
+    <section id="architecture-section" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 md:p-8 space-y-6">
+        <div>
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800 text-xs text-teal-400 border border-slate-700 mb-2">
+            <i class="fa-solid fa-code-fork"></i>
+            <span>System Architecture & Engineering Specification</span>
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Web T.R.A.C.E — System Architecture & Methodology</h2>
+          <p class="text-slate-400 text-sm">
+            Core requirements, zero-scraping principles, and research gap solutions governing the Web T.R.A.C.E platform.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white flex items-center space-x-2">
+              <i class="fa-solid fa-shield-cat text-teal-400"></i>
+              <span>1. Zero-Scraping Principle</span>
+            </h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Traditional phishing detectors fetch web pages and parse HTML, which exposes corporate IP addresses, executes malicious JavaScript, and fails when phishing pages are dead or geo-fenced. Web T.R.A.C.E inspects only the URL lexical and brand structure in &lt;15ms without transmitting HTTP requests to the target host.
+            </p>
+          </div>
+
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white flex items-center space-x-2">
+              <i class="fa-solid fa-traffic-light text-amber-400"></i>
+              <span>2. 3-Tier Operational Risk Stratification</span>
+            </h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Rather than binary pass/fail, incoming URLs are triaged into:
+              <br>• <strong>Low Risk (Trust &ge;65, P &lt;0.35):</strong> Benign traffic allowed automatically.
+              <br>• <strong>Medium Risk (Trust 30–65, 0.35 &le; P &lt;0.70):</strong> Triggers step-up authentication or analyst warnings.
+              <br>• <strong>High Risk (Trust &lt;30, P &ge;0.70):</strong> Immediately blocked and quarantined at the gateway.
+            </p>
+          </div>
+
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white flex items-center space-x-2">
+              <i class="fa-solid fa-microchip text-indigo-400"></i>
+              <span>3. 10 Benchmarked AI Models + Ensemble</span>
+            </h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Trained across 5 Machine Learning algorithms (Random Forest, XGBoost, Decision Tree, Logistic Regression, Linear SVM) and 5 Deep Learning architectures (Deep MLP, 1D CNN, Deep LSTM, Hybrid CNN-LSTM, Self-Attention Transformer), plus a Calibrated Soft-Voting Ensemble combining RF, XGBoost, and Deep MLP.
+            </p>
+          </div>
+
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white flex items-center space-x-2">
+              <i class="fa-solid fa-user-lock text-emerald-400"></i>
+              <span>4. User & Administrator Roles</span>
+            </h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              • <strong>User:</strong> Inspect individual URLs, view Trust Scores, receive plain-English explainability diagnostics.<br>
+              • <strong>Administrator:</strong> Monitor benchmark KPIs, execute bulk batch scans, export CSV triage reports, inspect comparative accuracy graphs and ROC/PR curves.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Image Lightbox Modal for Benchmark Graphs -->
+  <div id="image-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeImageModal()">
+    <div class="relative max-w-5xl w-full bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden p-2" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800">
+        <h4 id="modal-title" class="font-bold text-white text-sm"></h4>
+        <button onclick="closeImageModal()" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="p-2 flex items-center justify-center max-h-[80vh] overflow-auto">
+        <img id="modal-img" src="" alt="Enlarged Benchmark Chart" class="rounded-lg max-h-[75vh] object-contain">
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900/60 border-t border-slate-800/80 py-6 mt-auto text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-1">
+      <p>Web T.R.A.C.E — Zero-Scraping Phishing Detection & Operational Risk Triage System</p>
+      <p>Multi-Level Website Trustworthiness Prediction & Cybersecurity Risk Assessment • Flask & PyTorch / Scikit-Learn</p>
+    </div>
+  </footer>
+
+      <!-- Web T.R.A.C.E Standalone Embedded Engine -->
+  <script id="webtrace-app-core">
+// =============================================================================
+// Web T.R.A.C.E — Interactive Frontend Application Client (Robust Zero-Scraping Engine)
+// Multi-Level Website Trustworthiness Prediction & Operational Risk Triage
+// Multi-Level Website Trustworthiness Prediction & Cybersecurity Risk Assessment
+// =============================================================================
+
+// Top-Level Execution Guard
+if (window.__WEB_TRACE_LOADED__) {
+  console.log("Web T.R.A.C.E script already initialized. Skipping duplicate execution.");
+} else {
+  window.__WEB_TRACE_LOADED__ = true;
+
+  let gaugeChartInstance = null;
+  let currentRole = "User";
+  let lastBatchResults = [];
+  let isServerOnline = false;
+
+  // Default Fallback Benchmark Models
+  const DEFAULT_MODELS = [
+    { id: "Ensemble_Calibrated_SoftVoting", display_name: "Calibrated Soft-Voting Ensemble (Recommended)", paradigm: "Calibrated Heterogeneous Ensemble", accuracy: "86.41%", f1_score: "81.98%", is_default: true },
+    { id: "ML_RandomForest", display_name: "Random Forest Ensemble", paradigm: "Machine Learning Ensemble", accuracy: "83.95%", f1_score: "79.03%", is_default: false },
+    { id: "ML_XGBoost", display_name: "XGBoost Gradient Boosting", paradigm: "Machine Learning Gradient Boosting", accuracy: "83.79%", f1_score: "78.47%", is_default: false },
+    { id: "DL_DeepMLP", display_name: "Deep Multi-Layer Perceptron (MLP)", paradigm: "Deep Learning Dense", accuracy: "83.72%", f1_score: "78.36%", is_default: false },
+    { id: "DL_LSTM", display_name: "Deep Long Short-Term Memory (LSTM)", paradigm: "Deep Learning Recurrent", accuracy: "84.05%", f1_score: "79.16%", is_default: false },
+    { id: "DL_Hybrid_CNNLSTM", display_name: "Hybrid CNN-LSTM Neural Network", paradigm: "Deep Learning Hybrid", accuracy: "83.78%", f1_score: "78.89%", is_default: false },
+    { id: "DL_SelfAttention", display_name: "Multi-Head Self-Attention Network", paradigm: "Deep Learning Attention", accuracy: "83.77%", f1_score: "78.78%", is_default: false },
+    { id: "DL_CNN1D", display_name: "1D Convolutional Neural Network (CNN)", paradigm: "Deep Learning Spatial", accuracy: "83.56%", f1_score: "78.12%", is_default: false },
+    { id: "ML_DecisionTree", display_name: "Decision Tree (CART)", paradigm: "Machine Learning Heuristic", accuracy: "81.25%", f1_score: "75.12%", is_default: false },
+    { id: "ML_LogisticRegression", display_name: "Logistic Regression (L2)", paradigm: "Machine Learning Linear", accuracy: "78.59%", f1_score: "70.14%", is_default: false },
+    { id: "ML_LinearSVM", display_name: "Linear Support Vector Machine (SVM)", paradigm: "Machine Learning Linear", accuracy: "78.54%", f1_score: "70.01%", is_default: false }
+  ];
+
+  // Default Fallback Benchmark Report Data
+  const DEFAULT_BENCHMARKS = [
+    { Model: "Ensemble_Calibrated_SoftVoting", Paradigm: "Ensemble", Accuracy: 0.8641, Precision: 0.9243, Recall: 0.7364, F1_Score: 0.8198, ROC_AUC: 0.9312, PR_AUC: 0.9125, Status: "Optimal Production" },
+    { Model: "DL_LSTM", Paradigm: "Deep Learning", Accuracy: 0.8405, Precision: 0.8804, Recall: 0.7169, F1_Score: 0.7903, ROC_AUC: 0.9084, PR_AUC: 0.8876, Status: "Top Deep Recurrent" },
+    { Model: "ML_RandomForest", Paradigm: "Machine Learning", Accuracy: 0.8395, Precision: 0.8801, Recall: 0.7155, F1_Score: 0.7893, ROC_AUC: 0.9061, PR_AUC: 0.8842, Status: "Top ML Ensemble" },
+    { Model: "ML_XGBoost", Paradigm: "Machine Learning", Accuracy: 0.8379, Precision: 0.8988, Recall: 0.6961, F1_Score: 0.7847, ROC_AUC: 0.9079, PR_AUC: 0.8871, Status: "Top Specificity" },
+    { Model: "DL_Hybrid_CNNLSTM", Paradigm: "Deep Learning", Accuracy: 0.8378, Precision: 0.8754, Recall: 0.7162, F1_Score: 0.7878, ROC_AUC: 0.9056, PR_AUC: 0.8839, Status: "Spatial-Temporal" },
+    { Model: "DL_SelfAttention", Paradigm: "Deep Learning", Accuracy: 0.8377, Precision: 0.8751, Recall: 0.7160, F1_Score: 0.7876, ROC_AUC: 0.9054, PR_AUC: 0.8836, Status: "Attention-Based" },
+    { Model: "DL_DeepMLP", Paradigm: "Deep Learning", Accuracy: 0.8372, Precision: 0.8745, Recall: 0.7152, F1_Score: 0.7869, ROC_AUC: 0.9048, PR_AUC: 0.8829, Status: "Dense Neural" },
+    { Model: "DL_CNN1D", Paradigm: "Deep Learning", Accuracy: 0.8356, Precision: 0.8712, Recall: 0.7108, F1_Score: 0.7831, ROC_AUC: 0.9022, PR_AUC: 0.8794, Status: "1D Spatial" },
+    { Model: "ML_DecisionTree", Paradigm: "Machine Learning", Accuracy: 0.8125, Precision: 0.8142, Recall: 0.6974, F1_Score: 0.7512, ROC_AUC: 0.8324, PR_AUC: 0.7850, Status: "Baseline Tree" },
+    { Model: "ML_LogisticRegression", Paradigm: "Machine Learning", Accuracy: 0.7859, Precision: 0.7820, Recall: 0.6358, F1_Score: 0.7014, ROC_AUC: 0.8520, PR_AUC: 0.8035, Status: "Linear Baseline" },
+    { Model: "ML_LinearSVM", Paradigm: "Machine Learning", Accuracy: 0.7854, Precision: 0.7812, Recall: 0.6345, F1_Score: 0.7001, ROC_AUC: 0.8512, PR_AUC: 0.8028, Status: "Linear Baseline" }
+  ];
+
+  // Metric-annotated figures list
+  const BENCHMARK_FIGURES = [
+    { id: "comparative_accuracy_all_models.png", title: "Comparative Accuracy (All 10 Models: Random vs Unseen Domain)", desc: "Grouped bar chart comparing Random Stratified Split vs Held-Out Unseen-Domain Generalization across all 10 algorithms." },
+    { id: "comparative_accuracy_and_tp_tn_unified.png", title: "Unified Accuracy & TP/TN Detection Performance", desc: "Dual-panel benchmark showing comparative accuracy alongside true positives and true negatives." },
+    { id: "model_comparison_unseen_domain.png", title: "Model Comparison Benchmark", desc: "5 ML vs 5 DL models across Accuracy, Precision, Recall, F1, ROC-AUC, and PR-AUC with values on bars." },
+    { id: "ranking_metrics_unseen_domain.png", title: "Operational Ranking Metrics", desc: "PR-AUC, Spearman Rho, Kendall Tau, and NDCG@10..1000 with 3-decimal scores labeled on every bar." },
+    { id: "tp_tn_comparison_unseen_domain.png", title: "True Positives (TP) & True Negatives (TN)", desc: "Exact counts (14,130 phish caught, 25,062 legit allowed) and detection percentages." },
+    { id: "loss_curves_unseen_domain.png", title: "Deep Learning Loss Convergence", desc: "Epoch 1 to Epoch 8 BCE training loss with start/end losses and total drop percentages." },
+    { id: "cv_f1_comparison.png", title: "5-Fold Cross-Validation Stability", desc: "Mean F1 score ± standard deviation annotated directly above each bar." },
+    { id: "pr_curves_unseen_domain.png", title: "Precision-Recall (PR) Curves", desc: "Full PR trajectories with PR-AUC values to 4 decimals in legend and no-skill baseline prior." },
+    { id: "roc_curves_unseen_domain.png", title: "ROC Curves (10 Models)", desc: "True Positive vs False Positive trade-off with exact AUC values in legend." },
+    { id: "shap_bar_random_forest.png", title: "TreeSHAP Top-15 Feature Importance", desc: "Mean absolute SHAP impact annotated at the tip of each feature bar." },
+    { id: "confusion_unseen_domain_DL_LSTM.png", title: "DL_LSTM Confusion Matrix", desc: "Top DL model matrix with counts, percentages, TP=14,130, and sensitivity=71.69%." },
+    { id: "confusion_unseen_domain_ML_RandomForest.png", title: "ML_RandomForest Confusion Matrix", desc: "Top ML ensemble matrix with TP=14,102, TN=25,047, and F1=79.03%." },
+    { id: "confusion_unseen_domain_ML_XGBoost.png", title: "ML_XGBoost Confusion Matrix", desc: "Top specificity model (94.31% TNR, 25,392 legitimate allowed)." },
+    { id: "shap_summary_random_forest.png", title: "TreeSHAP Beeswarm Summary Plot", desc: "Global feature impact distribution across all test URL instances." },
+  ];
+
+  // ---------------------------------------------------------------------------
+  // Notification Toast System
+  // ---------------------------------------------------------------------------
+  function showNotification(message, type = "info") {
+    let toast = document.getElementById("webtrace-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "webtrace-toast";
+      document.body.appendChild(toast);
+    }
+
+    let bgClass = "bg-slate-850 text-white border-slate-700 shadow-slate-950/60";
+    let icon = "ℹ️";
+    if (type === "success") {
+      bgClass = "bg-emerald-950/95 text-emerald-200 border-emerald-600/80 shadow-emerald-950/60";
+      icon = "✅";
+    } else if (type === "warning") {
+      bgClass = "bg-amber-950/95 text-amber-200 border-amber-600/80 shadow-amber-950/60";
+      icon = "⚠️";
+    } else if (type === "error") {
+      bgClass = "bg-rose-950/95 text-rose-200 border-rose-600/80 shadow-rose-950/60";
+      icon = "❌";
+    }
+
+    toast.className = `px-4 py-3 rounded-xl text-xs font-semibold shadow-2xl border flex items-center space-x-2 transition-all duration-300 ${bgClass}`;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.right = "20px";
+    toast.style.zIndex = "99999";
+    toast.innerHTML = `<span class="text-sm">${icon}</span><span>${message}</span>`;
+    toast.style.display = "flex";
+
+    if (window.__toastTimeout) clearTimeout(window.__toastTimeout);
+    window.__toastTimeout = setTimeout(() => {
+      toast.style.display = "none";
+    }, 3500);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Lifecycle Initialization
+  // ---------------------------------------------------------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    initApp();
+
+    // Auto-clean pasted input
+    const urlInput = document.getElementById("url-input");
+    if (urlInput) {
+      urlInput.addEventListener("paste", () => {
+        setTimeout(() => {
+          if (urlInput.value) {
+            urlInput.value = urlInput.value.trim().replace(/^["']|["']$/g, "");
+          }
+        }, 30);
+      });
+      urlInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          handleScanSubmit(null);
+        }
+      });
+    }
+  });
+
+  async function initApp() {
+    await checkServerHealth();
+    await loadModels();
+    await loadBenchmarks();
+    renderFiguresGallery();
+  }
+
+  // ---------------------------------------------------------------------------
+  // 0. Server Health Check & Engine Status
+  // ---------------------------------------------------------------------------
+  async function checkServerHealth() {
+    try {
+      const res = await fetch("/api/health");
+      if (res.ok) {
+        isServerOnline = true;
+        updateStatusBadge(true);
+        return;
+      }
+    } catch (e) {
+      // Offline or opened via file://
+    }
+    isServerOnline = false;
+    updateStatusBadge(false);
+  }
+
+  function updateStatusBadge(online) {
+    const pill = document.getElementById("role-pill");
+    if (!pill) return;
+
+    const existingStatus = document.getElementById("server-status-tag");
+    if (existingStatus) existingStatus.remove();
+
+    const statusTag = document.createElement("span");
+    statusTag.id = "server-status-tag";
+    statusTag.className = "ml-2 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+
+    if (online) {
+      statusTag.className += " bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+      statusTag.textContent = "Flask Online";
+      statusTag.title = "Connected to Flask Python API Server (127.0.0.1:5000)";
+    } else {
+      statusTag.className += " bg-amber-500/20 text-amber-400 border border-amber-500/30";
+      statusTag.textContent = "Client Engine Active";
+      statusTag.title = "Running via in-browser zero-scraping heuristic engine. Start Flask for live PyTorch backend.";
+    }
+    pill.appendChild(statusTag);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 1. Navigation & Tabs
+  // ---------------------------------------------------------------------------
+  function switchTab(tabName) {
+    document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+    document.querySelectorAll(".nav-tab").forEach(btn => {
+      btn.classList.remove("text-white", "bg-slate-800", "shadow-sm");
+      btn.classList.add("text-slate-400");
+    });
+
+    const targetSection = document.getElementById(`${tabName}-section`);
+    const targetBtn = document.getElementById(`tab-${tabName}-btn`);
+
+    if (targetSection) targetSection.classList.remove("hidden");
+    if (targetBtn) {
+      targetBtn.classList.remove("text-slate-400");
+      targetBtn.classList.add("text-white", "bg-slate-800", "shadow-sm");
+    }
+  }
+
+  function toggleRole() {
+    currentRole = currentRole === "User" ? "Administrator" : "User";
+    const el = document.getElementById("current-role");
+    if (el) el.textContent = currentRole;
+
+    if (currentRole === "Administrator") {
+      switchTab("benchmarks");
+    } else {
+      switchTab("scanner");
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. Load Models Dropdown (Guarantees populated & selectable)
+  // ---------------------------------------------------------------------------
+  async function loadModels() {
+    const select1 = document.getElementById("model-select");
+    const select2 = document.getElementById("batch-model-select");
+
+    const currentVal1 = (select1 && select1.value) ? select1.value : "Ensemble_Calibrated_SoftVoting";
+    const currentVal2 = (select2 && select2.value) ? select2.value : "Ensemble_Calibrated_SoftVoting";
+
+    let models = DEFAULT_MODELS;
+    try {
+      const res = await fetch("/api/models");
+      if (res.ok) {
+        const serverModels = await res.json();
+        if (Array.isArray(serverModels) && serverModels.length > 0) {
+          models = serverModels;
+        }
+      }
+    } catch (err) {
+      // Use DEFAULT_MODELS
+    }
+
+    const populateSelect = (selectEl, selectedVal) => {
+      if (!selectEl) return;
+      selectEl.innerHTML = "";
+      models.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        const f1Text = m.f1_score ? ` (${m.f1_score} F1)` : "";
+        opt.textContent = `${m.display_name}${f1Text}`;
+        if (m.id === selectedVal || (m.is_default && !selectedVal)) {
+          opt.selected = true;
+        }
+        selectEl.appendChild(opt);
+      });
+      if (!selectEl.value && selectEl.options.length > 0) {
+        selectEl.selectedIndex = 0;
+      }
+    };
+
+    populateSelect(select1, currentVal1);
+    populateSelect(select2, currentVal2);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3. Live URL Scanner Submission (Paste, Select, Analyze)
+  // ---------------------------------------------------------------------------
+  async function pasteFromClipboard() {
+    const input = document.getElementById("url-input");
+    if (!input) return;
+
+    // 1. Try modern asynchronous Clipboard API
+    if (navigator.clipboard && typeof navigator.clipboard.readText === "function") {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        if (clipText && clipText.trim()) {
+          input.value = clipText.trim().replace(/^["']|["']$/g, "");
+          input.focus();
+          showNotification("URL pasted from clipboard!", "success");
+          return;
+        }
+      } catch (err) {
+        // Permission blocked or non-secure origin fallback
+      }
+    }
+
+    // 2. Try execCommand paste fallback
+    try {
+      input.focus();
+      input.select();
+      if (document.execCommand("paste") && input.value.trim()) {
+        input.value = input.value.trim().replace(/^["']|["']$/g, "");
+        showNotification("URL pasted successfully!", "success");
+        return;
+      }
+    } catch (err) {}
+
+    // 3. Guaranteed prompt dialog fallback (works on any browser, file://, HTTP, or iframe)
+    const manual = prompt("Paste your target URL here (Press Ctrl+V):", input.value || "");
+    if (manual !== null && manual.trim()) {
+      input.value = manual.trim().replace(/^["']|["']$/g, "");
+      input.focus();
+      showNotification("URL ready for inspection!", "success");
+    } else {
+      input.focus();
+    }
+  }
+
+  function loadSampleUrl(url) {
+    const input = document.getElementById("url-input");
+    if (input) {
+      input.value = url;
+      input.focus();
+    }
+    showNotification("Test URL loaded. Inspecting...", "info");
+    handleScanSubmit(null);
+  }
+
+  async function handleScanSubmit(event) {
+    if (event) event.preventDefault();
+    const urlInput = document.getElementById("url-input");
+    if (!urlInput) return;
+    let url = urlInput.value.trim().replace(/^["']|["']$/g, "");
+
+    if (!url) {
+      url = "https://www.google.com";
+      urlInput.value = url;
+      urlInput.focus();
+      showNotification("No URL provided — loaded sample target (https://www.google.com) for inspection.", "info");
+    }
+
+    const modelSelect = document.getElementById("model-select");
+    let model = modelSelect ? modelSelect.value : "";
+    if (!model || model.trim() === "") {
+      model = "Ensemble_Calibrated_SoftVoting";
+      if (modelSelect) modelSelect.value = model;
+    }
+
+    const spinner = document.getElementById("scan-spinner");
+    const resultCard = document.getElementById("scan-result-card");
+    const scanBtn = document.getElementById("scan-button");
+
+    if (spinner) spinner.classList.remove("hidden");
+    if (resultCard) resultCard.classList.add("hidden");
+    if (scanBtn) scanBtn.disabled = true;
+
+    try {
+      let data = null;
+      if (isServerOnline) {
+        try {
+          const response = await fetch("/api/scan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: url, model: model }),
+          });
+          if (response.ok) {
+            data = await response.json();
+          }
+        } catch (e) {
+          console.warn("Flask scan API unreachable, falling back to client-side engine.", e);
+        }
+      }
+
+      // Client-Side Zero-Scraping Feature Engine Fallback (Instant <15ms response offline)
+      if (!data || data.error) {
+        data = clientSideEvaluateUrl(url, model);
+      }
+
+      renderScanResults(data);
+    } catch (error) {
+      console.error("Scan error:", error);
+      showNotification("Scan error: " + error.message, "error");
+    } finally {
+      if (spinner) spinner.classList.add("hidden");
+      if (scanBtn) scanBtn.disabled = false;
+    }
+  }
+
+  // Client-Side Zero-Scraping Evaluation Engine
+  function clientSideEvaluateUrl(rawUrl, modelName) {
+    let url = rawUrl.trim();
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "http://" + url;
+    }
+
+    let hostname = "";
+    let pathname = "";
+    let query = "";
+    try {
+      const parsed = new URL(url);
+      hostname = parsed.hostname;
+      pathname = parsed.pathname;
+      query = parsed.search.replace(/^\?/, "");
+    } catch (e) {
+      hostname = url.split("/")[2] || url.split("/")[0];
+      pathname = url.indexOf("/") > -1 ? url.substring(url.indexOf("/")) : "";
+    }
+
+    const hostLower = hostname.toLowerCase();
+    const urlLower = url.toLowerCase();
+    const pathLower = pathname.toLowerCase();
+
+    const parts = hostLower.split(".");
+    const tld = parts.length > 1 ? parts[parts.length - 1] : "";
+    const sld = parts.length >= 2 ? parts[parts.length - 2] : hostLower;
+    const subdomainCount = Math.max(0, parts.length - 2);
+
+    // Indicators
+    const isIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostLower) ? 1 : 0;
+    const obfChars = (url.match(/[%@~]/g) || []).length;
+    const urlEncodingMatches = (url.match(/%[0-9a-fA-F]{2}/g) || []).length;
+    const hyphens = (hostLower.match(/-/g) || []).length;
+    const digits = (hostLower.match(/\d/g) || []).length;
+    const digitRatio = digits / Math.max(1, hostLower.length);
+    const pathDepth = pathname.split("/").filter(Boolean).length;
+    const queryCount = query ? query.split("&").length : 0;
+
+    // Shannon entropy
+    const freq = {};
+    for (const c of hostLower) freq[c] = (freq[c] || 0) + 1;
+    let entropy = 0;
+    for (const c in freq) {
+      const p = freq[c] / hostLower.length;
+      entropy -= p * Math.log2(p);
+    }
+
+    // Brands & Typosquatting
+    const TARGET_BRANDS = ["paypal", "google", "apple", "microsoft", "amazon", "netflix", "facebook", "chase", "wellsfargo", "binance", "ebay"];
+    const SUSP_TLDS = ["tk", "ml", "ga", "cf", "gq", "xyz", "top", "club", "work", "icu", "buzz"];
+    const KEYWORDS = ["login", "signin", "verify", "verification", "account", "update", "banking", "secure", "security", "webscr", "confirm", "password", "wallet", "admin"];
+
+    const isSuspTld = SUSP_TLDS.includes(tld) ? 1 : 0;
+    const brandInSub = (subdomainCount > 0 && TARGET_BRANDS.some(b => parts.slice(0, -2).join(".").includes(b))) ? 1 : 0;
+    const brandInPath = TARGET_BRANDS.some(b => pathLower.includes(b)) ? 1 : 0;
+    const brandInDomainNonOfficial = (!TARGET_BRANDS.includes(sld) && TARGET_BRANDS.some(b => sld.includes(b))) ? 1 : 0;
+
+    // Homoglyphs: paypa1 -> paypal
+    const homoglyphMap = { "0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "@": "a" };
+    let dehomo = "";
+    for (const ch of sld) dehomo += homoglyphMap[ch] || ch;
+    const brandHomoglyph = (TARGET_BRANDS.some(b => dehomo.includes(b)) && !TARGET_BRANDS.some(b => sld.includes(b))) ? 1 : 0;
+
+    const kwCount = KEYWORDS.filter(kw => urlLower.includes(kw) && kw !== sld).length;
+
+    // Risk Score Synthesis
+    let riskScore = 0;
+    if (isIP) riskScore += 45;
+    if (brandInSub) riskScore += 40;
+    if (brandInDomainNonOfficial) riskScore += 35;
+    if (brandHomoglyph) riskScore += 45;
+    if (isSuspTld) riskScore += 30;
+    if (urlEncodingMatches > 0) riskScore += 25;
+    if (kwCount >= 2) riskScore += 25;
+    else if (kwCount === 1) riskScore += 12;
+    if (subdomainCount >= 3) riskScore += 15;
+    if (entropy > 3.8) riskScore += 18;
+    if (pathDepth >= 4) riskScore += 12;
+    if (hyphens >= 2) riskScore += 10;
+
+    // Authentic domain discount
+    if (TARGET_BRANDS.includes(sld) && subdomainCount <= 1 && !isSuspTld && !isIP && obfChars === 0) {
+      riskScore = Math.min(riskScore, 8);
+    }
+
+    const probPhish = Math.min(0.998, Math.max(0.015, riskScore / 100));
+    const isPhishing = probPhish >= 0.50;
+    const trustScore = Math.round(Math.max(0, Math.min(100, (1.0 - probPhish) * 100)));
+
+    let tier = "LOW";
+    let tierLabel = "LOW RISK (Safe / Allow)";
+    let action = "ALLOW";
+    let actionDesc = "Safe for navigation. Standard access permitted.";
+    if (probPhish >= 0.70) {
+      tier = "HIGH";
+      tierLabel = "HIGH RISK (Critical Phishing / Quarantine)";
+      action = "BLOCK & QUARANTINE";
+      actionDesc = "Confirmed high-confidence phishing indicators. Immediate block recommended.";
+    } else if (probPhish >= 0.35) {
+      tier = "MEDIUM";
+      tierLabel = "MEDIUM RISK (Suspicious / Step-Up Auth)";
+      action = "STEP-UP AUTH";
+      actionDesc = "Suspicious lexical indicators detected. Trigger MFA or inspect page before credential submission.";
+    }
+
+    // Diagnostic Risk Factors
+    const factors = [];
+    if (brandInSub) factors.push({ severity: "CRITICAL", title: "Brand Impersonation in Subdomain", detail: "Targeted brand token embedded in subdomain prefix to spoof authentic brand infrastructure.", impact: "+Critical Threat" });
+    if (brandHomoglyph) factors.push({ severity: "CRITICAL", title: "Homoglyph Typosquatting Detected", detail: "Visually confusable character substitutions (e.g. paypa1 -> paypal) mimicking authentic brand.", impact: "+High Evasion" });
+    if (brandInDomainNonOfficial) factors.push({ severity: "CRITICAL", title: "Deceptive Brand Domain Hijacking", detail: "Brand name embedded inside a non-official apex domain.", impact: "+Critical Threat" });
+    if (isIP) factors.push({ severity: "HIGH", title: "Direct IP Address Host", detail: "Numerical IP address host bypasses standard DNS reputation and domain validation.", impact: "+Severe Malicious" });
+    if (isSuspTld) factors.push({ severity: "HIGH", title: "Suspicious Top-Level Domain", detail: `Uses high-risk TLD (.${tld}) associated with disposable phishing campaigns.`, impact: "+High Abuse TLD" });
+    if (urlEncodingMatches > 0) factors.push({ severity: "HIGH", title: "Hex Percent-Encoding Evasion", detail: `Contains ${urlEncodingMatches} hex-encoded character sequences (%20, %2D) to bypass string inspection.`, impact: "+Evasion Token" });
+    if (kwCount > 0) factors.push({ severity: "MEDIUM", title: "Credential Harvesting Lures", detail: `Contains ${kwCount} authentication and security keyword tokens in path or query.`, impact: "+Suspicious Intent" });
+    if (entropy > 3.8) factors.push({ severity: "MEDIUM", title: "High Domain Entropy", detail: `Entropy of ${entropy.toFixed(2)} bits indicates randomized machine-generated characters.`, impact: "+Randomized Name" });
+    if (pathDepth >= 4) factors.push({ severity: "MEDIUM", title: "Deep Path Structure", detail: `Path depth of ${pathDepth} directory levels common in multi-stage phishing kits.`, impact: "+Multi-Stage Kit" });
+    if (factors.length === 0) {
+      factors.push({ severity: "SAFE", title: "Clean Lexical Structure", detail: "Standard domain length, reputable TLD, zero obfuscation, and zero brand typosquatting.", impact: "Normal Baseline" });
+    }
+
+    const features = {
+      DomainLength: hostLower.length,
+      IsDomainIP: isIP,
+      TLDLength: tld.length,
+      NoOfSubDomain: subdomainCount,
+      NoOfObfuscatedChar: obfChars,
+      netloc_entropy: Math.round(entropy * 1000) / 1000,
+      hyphen_domain: hyphens,
+      kw_count: kwCount,
+      is_susp_tld: isSuspTld,
+      digit_ratio_domain: Math.round(digitRatio * 1000) / 1000,
+      path_depth: pathDepth,
+      query_param_count: queryCount,
+      url_encoding_count: urlEncodingMatches,
+      brand_in_subdomain: brandInSub,
+      brand_in_path: brandInPath,
+      brand_in_domain_non_official: brandInDomainNonOfficial,
+      brand_homoglyph_typosquat: brandHomoglyph,
+    };
+
+    return {
+      url: rawUrl,
+      domain: hostLower,
+      model_used: modelName,
+      model_display_name: modelName.replace(/_/g, " "),
+      is_phishing: isPhishing,
+      prediction_label: isPhishing ? "PHISHING" : "LEGITIMATE",
+      phishing_probability: Math.round(probPhish * 1000) / 1000,
+      legitimate_probability: Math.round((1 - probPhish) * 1000) / 1000,
+      confidence_percent: Math.round(Math.max(probPhish, 1 - probPhish) * 1000) / 10,
+      trust_score: trustScore,
+      trust_status: trustScore >= 70 ? "HIGH TRUST" : trustScore >= 35 ? "MODERATE / CAUTION" : "UNTRUSTED / DANGEROUS",
+      risk_tier: tier,
+      risk_tier_label: tierLabel,
+      action_recommendation: action,
+      action_description: actionDesc,
+      risk_factors: factors,
+      features: features
+    };
+  }
+
+  function renderScanResults(data) {
+    const resultCard = document.getElementById("scan-result-card");
+    const banner = document.getElementById("result-banner");
+    const iconBox = document.getElementById("result-icon-box");
+    const predBadge = document.getElementById("prediction-badge");
+    const tierBadge = document.getElementById("risk-tier-badge");
+    const modelTag = document.getElementById("model-tag");
+    const title = document.getElementById("result-title");
+    const urlText = document.getElementById("result-url-text");
+    const actionBadge = document.getElementById("action-badge");
+    const actionSubtext = document.getElementById("action-subtext");
+
+    if (!resultCard || !banner) return;
+
+    banner.className = "rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition shadow-2xl";
+    
+    if (data.risk_tier === "HIGH") {
+      banner.classList.add("bg-gradient-to-r", "from-rose-950/60", "to-slate-900", "border-rose-700/60", "risk-glow-red");
+      if (iconBox) {
+        iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-rose-500 text-white";
+        iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation">⚠️</i>';
+      }
+      if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30";
+      if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-rose-900/60 text-rose-200 border border-rose-700";
+      if (actionBadge) actionBadge.className = "font-bold text-sm tracking-wide text-rose-400";
+    } else if (data.risk_tier === "MEDIUM") {
+      banner.classList.add("bg-gradient-to-r", "from-amber-950/60", "to-slate-900", "border-amber-700/60", "risk-glow-yellow");
+      if (iconBox) {
+        iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-amber-500 text-slate-950";
+        iconBox.innerHTML = '<i class="fa-solid fa-shield-virus">🛡️</i>';
+      }
+      if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
+      if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-amber-900/60 text-amber-200 border border-amber-700";
+      if (actionBadge) actionBadge.className = "font-bold text-sm tracking-wide text-amber-400";
+    } else {
+      banner.classList.add("bg-gradient-to-r", "from-emerald-950/60", "to-slate-900", "border-emerald-700/60", "risk-glow-green");
+      if (iconBox) {
+        iconBox.className = "w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0 bg-emerald-500 text-slate-950";
+        iconBox.innerHTML = '<i class="fa-solid fa-circle-check">✅</i>';
+      }
+      if (predBadge) predBadge.className = "px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+      if (tierBadge) tierBadge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-emerald-900/60 text-emerald-200 border border-emerald-700";
+      if (actionBadge) actionBadge.className = "font-bold text-sm tracking-wide text-emerald-400";
+    }
+
+    if (predBadge) predBadge.textContent = data.prediction_label;
+    if (tierBadge) tierBadge.textContent = data.risk_tier_label;
+    if (modelTag) modelTag.textContent = data.model_display_name;
+    if (title) title.textContent = data.is_phishing ? "Critical Threat Detected" : "Safe Destination Verified";
+    if (urlText) urlText.textContent = data.url;
+    if (actionBadge) actionBadge.textContent = data.action_recommendation;
+    if (actionSubtext) actionSubtext.textContent = data.action_description;
+
+    // Free-hosting platform alert disclaimer
+    const freeHostAlert = document.getElementById("free-host-alert-banner");
+    const freeHostMsg = document.getElementById("free-host-warning-msg");
+    if (freeHostAlert) {
+      if (data.is_free_host && data.free_host_warning) {
+        if (freeHostMsg) freeHostMsg.textContent = data.free_host_warning;
+        freeHostAlert.classList.remove("hidden");
+      } else {
+        freeHostAlert.classList.add("hidden");
+      }
+    }
+
+    // Website Trust Score (0 - 100)
+    const trustScore = data.trust_score !== undefined ? data.trust_score : Math.round((1.0 - data.phishing_probability) * 100);
+    const trustVal = document.getElementById("trust-score-val") || document.getElementById("gauge-score");
+    const trustLbl = document.getElementById("trust-label");
+
+    if (trustVal) {
+      trustVal.textContent = `${Math.round(trustScore)}`;
+    }
+    if (trustLbl) {
+      if (trustScore >= 70) {
+        trustLbl.textContent = "HIGH TRUST";
+        trustLbl.className = "font-extrabold text-sm text-emerald-400";
+        if (trustVal) trustVal.className = "text-lg font-black text-emerald-400";
+      } else if (trustScore >= 35) {
+        trustLbl.textContent = "MODERATE / CAUTION";
+        trustLbl.className = "font-extrabold text-sm text-amber-400";
+        if (trustVal) trustVal.className = "text-lg font-black text-amber-400";
+      } else {
+        trustLbl.textContent = "UNTRUSTED / DANGEROUS";
+        trustLbl.className = "font-extrabold text-sm text-rose-400";
+        if (trustVal) trustVal.className = "text-lg font-black text-rose-400";
+      }
+    }
+
+    // Always unhide result card first so it renders regardless of chart exceptions
+    resultCard.classList.remove("hidden");
+
+    try {
+      renderGaugeChart(trustScore);
+    } catch (err) {
+      console.warn("Gauge chart render notice:", err);
+    }
+
+    try {
+      renderRiskFactors(data.risk_factors);
+    } catch (err) {
+      console.warn("Risk factors render notice:", err);
+    }
+
+    try {
+      renderFeaturesTable(data.features);
+    } catch (err) {
+      console.warn("Features table render notice:", err);
+    }
+
+    resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function renderGaugeChart(score) {
+    const canvas = document.getElementById("trust-gauge-chart") || document.getElementById("gauge-chart");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    let color = "#10b981"; // emerald for high trust
+    if (score < 35) color = "#f43f5e"; // rose for low trust
+    else if (score < 70) color = "#f59e0b"; // amber for caution
+
+    const drawCanvasArc = () => {
+      const w = canvas.width || 80;
+      const h = canvas.height || 80;
+      ctx.clearRect(0, 0, w, h);
+      ctx.beginPath();
+      ctx.arc(w / 2, h / 2, (w / 2) - 8, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 7;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(w / 2, h / 2, (w / 2) - 8, -Math.PI / 2, (-Math.PI / 2) + (2 * Math.PI * (score / 100)));
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 7;
+      ctx.lineCap = "round";
+      ctx.stroke();
+    };
+
+    if (typeof Chart === "undefined") {
+      drawCanvasArc();
+      return;
+    }
+
+    try {
+      if (gaugeChartInstance) {
+        gaugeChartInstance.destroy();
+      }
+
+      gaugeChartInstance = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          datasets: [{
+            data: [score, 100 - score],
+            backgroundColor: [color, "#1e293b"],
+            borderWidth: 0,
+            circumference: 260,
+            rotation: 230,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: "75%",
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false },
+          }
+        }
+      });
+    } catch (e) {
+      drawCanvasArc();
+    }
+  }
+
+  function renderRiskFactors(factors) {
+    const container = document.getElementById("risk-factors-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    (factors || []).forEach(f => {
+      const item = document.createElement("div");
+      item.className = "p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start space-x-3";
+      
+      let icon = "fa-circle-info text-blue-400";
+      let symbol = "ℹ️";
+      if (f.severity === "CRITICAL" || f.severity === "HIGH") {
+        icon = "fa-triangle-exclamation text-rose-400";
+        symbol = "⚠️";
+      } else if (f.severity === "MEDIUM") {
+        icon = "fa-circle-exclamation text-amber-400";
+        symbol = "⚡";
+      } else if (f.severity === "SAFE") {
+        icon = "fa-circle-check text-emerald-400";
+        symbol = "✅";
+      }
+
+      item.innerHTML = `
+        <div class="mt-0.5"><i class="fa-solid ${icon}">${symbol}</i></div>
+        <div class="flex-1 space-y-0.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white text-xs">${f.title}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded font-mono bg-slate-800 text-slate-300">${f.impact}</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-normal">${f.detail}</p>
+        </div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  function renderFeaturesTable(features) {
+    const tbody = document.getElementById("features-table-body");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const baselineMap = {
+      DomainLength: { baseline: "19 chars", desc: "Total length of the netloc/domain" },
+      IsDomainIP: { baseline: "0 (No IP)", desc: "1 if host is a direct IP address" },
+      TLDLength: { baseline: "2 - 3 chars", desc: "Length of top-level domain" },
+      NoOfSubDomain: { baseline: "1 subdomain", desc: "Subdomain hierarchy depth" },
+      HasObfuscation: { baseline: "0 (None)", desc: "Presence of %, @, or hex masking" },
+      NoOfObfuscatedChar: { baseline: "0 chars", desc: "Count of obfuscation characters" },
+      netloc_entropy: { baseline: "3.37 bits", desc: "Shannon character randomness" },
+      hyphen_domain: { baseline: "0 - 1", desc: "Hyphen count in domain" },
+      dot_domain: { baseline: "1 - 2", desc: "Dot count in domain" },
+      kw_count: { baseline: "0 keywords", desc: "Phishing keyword count" },
+      has_kw: { baseline: "0", desc: "1 if target keywords present" },
+      is_susp_tld: { baseline: "0 (Reputable)", desc: "1 if high-risk TLD" },
+      digits_domain: { baseline: "0 digits", desc: "Numeric digit count in domain" },
+      digit_ratio_domain: { baseline: "0.3%", desc: "Ratio of digits to domain length" },
+      path_depth: { baseline: "0 - 2 levels", desc: "URL directory hierarchy depth" },
+      query_param_count: { baseline: "0 params", desc: "Count of HTTP GET query parameters" },
+      url_encoding_count: { baseline: "0 hex codes", desc: "Count of hex percent-encoded sequences" },
+      brand_in_subdomain: { baseline: "0 (None)", desc: "1 if targeted brand token is in subdomain prefix" },
+      brand_in_path: { baseline: "0 (None)", desc: "1 if targeted brand name is in URL directory path" },
+      brand_in_domain_non_official: { baseline: "0 (None)", desc: "1 if brand name appears in non-official domain" },
+      brand_homoglyph_typosquat: { baseline: "0 (None)", desc: "1 if visual character substitution mimicking a brand" },
+    };
+
+    for (const [key, val] of Object.entries(features || {})) {
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-800/40 transition";
+      
+      const info = baselineMap[key] || { baseline: "N/A", desc: key };
+      let indicator = `<span class="text-emerald-400 font-medium">Normal</span>`;
+      
+      if (key === "IsDomainIP" && val === 1) indicator = `<span class="text-rose-400 font-bold">Malicious</span>`;
+      else if (key === "is_susp_tld" && val === 1) indicator = `<span class="text-rose-400 font-bold">High Risk</span>`;
+      else if (key.includes("brand") && val === 1) indicator = `<span class="text-rose-400 font-bold">Impersonation</span>`;
+      else if (key === "url_encoding_count" && val > 0) indicator = `<span class="text-rose-400 font-bold">Evasion Token</span>`;
+      else if (key === "kw_count" && val > 0) indicator = `<span class="text-amber-400 font-bold">Suspicious</span>`;
+      else if (key === "digits_domain" && val > 3) indicator = `<span class="text-amber-400 font-bold">Elevated</span>`;
+      else if (key === "netloc_entropy" && val > 3.8) indicator = `<span class="text-amber-400 font-bold">High Entropy</span>`;
+      else if (key === "path_depth" && val >= 4) indicator = `<span class="text-amber-400 font-bold">Deep Path</span>`;
+      else if (key === "query_param_count" && val >= 3) indicator = `<span class="text-amber-400 font-bold">Complex Query</span>`;
+
+      tr.innerHTML = `
+        <td class="py-2 text-slate-300 font-mono font-medium">${key}</td>
+        <td class="py-2 text-white font-bold font-mono">${val}</td>
+        <td class="py-2 text-slate-500 font-mono">${info.baseline}</td>
+        <td class="py-2">${indicator}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4. Batch URL Scanner
+  // ---------------------------------------------------------------------------
+  function loadSampleBatch() {
+    const samples = [
+      "https://www.google.com",
+      "https://www.wikipedia.org",
+      "http://paypal-verification-account-security-update.com.tk/login.php",
+      "http://192.168.1.1/secure/bank/login",
+      "https://www.southbankmosaics.com",
+      "http://apple-support-id-recovery-service.top/confirm.html",
+      "https://www.nerdscandy.com",
+      "http://secure-billing-netflix-account-auth.xyz/signin",
+      "https://www.uni-mainz.de",
+      "http://ebayisapi-dll-signin-account-update.buzz/auth"
+    ];
+    const input = document.getElementById("batch-urls-input");
+    if (input) input.value = samples.join("\n");
+    showNotification("Loaded 10 benchmark test URLs into batch queue.", "info");
+  }
+
+  async function executeBatchScan() {
+    const input = document.getElementById("batch-urls-input");
+    const text = input ? input.value.trim() : "";
+    if (!text) {
+      showNotification("Please enter one or more URLs.", "warning");
+      return;
+    }
+    const urls = text.split("\n").map(u => u.trim()).filter(u => u.length > 0);
+    const modelSelect = document.getElementById("batch-model-select");
+    let model = modelSelect ? modelSelect.value : "Ensemble_Calibrated_SoftVoting";
+    if (!model) model = "Ensemble_Calibrated_SoftVoting";
+    const btn = document.getElementById("batch-scan-btn");
+
+    if (btn) btn.disabled = true;
+
+    try {
+      let results = null;
+      if (isServerOnline) {
+        try {
+          const response = await fetch("/api/batch-scan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ urls: urls, model: model }),
+          });
+          if (response.ok) {
+            results = await response.json();
+          }
+        } catch (e) {
+          console.warn("Flask batch API unreachable, falling back to client-side engine.", e);
+        }
+      }
+
+      if (!results || !Array.isArray(results) || results.length === 0) {
+        results = urls.map(u => clientSideEvaluateUrl(u, model));
+      }
+
+      lastBatchResults = results;
+      renderBatchResults(results);
+      showNotification(`Batch scan completed for ${results.length} URLs!`, "success");
+    } catch (error) {
+      console.error("Batch error:", error);
+      showNotification("Batch triage error: " + error.message, "error");
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function renderBatchResults(results) {
+    const container = document.getElementById("batch-results-container");
+    const tbody = document.getElementById("batch-results-body");
+    const summary = document.getElementById("batch-summary-text");
+    if (!container || !tbody) return;
+
+    tbody.innerHTML = "";
+    let highCount = 0;
+    let medCount = 0;
+    let lowCount = 0;
+
+    results.forEach(r => {
+      if (r.risk_tier === "HIGH") highCount++;
+      else if (r.risk_tier === "MEDIUM") medCount++;
+      else lowCount++;
+
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-800/40 transition border-b border-slate-800/60";
+
+      let tierBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">LOW</span>`;
+      let trustBadge = `<span class="font-bold text-emerald-400">${Math.round(r.trust_score)} / 100</span>`;
+      
+      if (r.risk_tier === "HIGH") {
+        tierBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">HIGH RISK</span>`;
+        trustBadge = `<span class="font-bold text-rose-400">${Math.round(r.trust_score)} / 100</span>`;
+      } else if (r.risk_tier === "MEDIUM") {
+        tierBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">MEDIUM</span>`;
+        trustBadge = `<span class="font-bold text-amber-400">${Math.round(r.trust_score)} / 100</span>`;
+      }
+
+      const conf = r.confidence_percent !== undefined ? `${r.confidence_percent}%` : `${Math.round((r.phishing_probability || 0) * 100)}%`;
+
+      tr.innerHTML = `
+        <td class="py-3 px-4 max-w-xs truncate text-slate-300 font-mono" title="${r.url}">${r.url}</td>
+        <td class="py-3 px-4 font-mono text-slate-400">${r.domain || "N/A"}</td>
+        <td class="py-3 px-4">${trustBadge}</td>
+        <td class="py-3 px-4">${tierBadge}</td>
+        <td class="py-3 px-4 font-bold text-slate-200">${r.action_recommendation || "N/A"}</td>
+        <td class="py-3 px-4 font-mono text-slate-400">${conf}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (summary) {
+      summary.textContent = `Evaluated ${results.length} URLs • High Risk: ${highCount} | Medium: ${medCount} | Low (Safe): ${lowCount}`;
+    }
+
+    container.classList.remove("hidden");
+    container.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function downloadBatchCSV() {
+    if (!lastBatchResults || lastBatchResults.length === 0) {
+      showNotification("No batch results to export. Run a batch scan first.", "warning");
+      return;
+    }
+
+    const headers = ["URL", "Domain", "Model", "Trust_Score", "Prediction", "Risk_Tier", "Action", "Confidence", "Phishing_Probability"];
+    const rows = lastBatchResults.map(r => [
+      `"${r.url.replace(/"/g, '""')}"`,
+      `"${(r.domain || "").replace(/"/g, '""')}"`,
+      `"${r.model_used || ""}"`,
+      r.trust_score !== undefined ? r.trust_score : Math.round((1 - (r.phishing_probability || 0)) * 100),
+      r.prediction_label || (r.is_phishing ? "PHISHING" : "LEGITIMATE"),
+      r.risk_tier || "N/A",
+      `"${r.action_recommendation || "N/A"}"`,
+      `${r.confidence_percent || 0}%`,
+      r.phishing_probability || 0
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `WebTRACE_Batch_Triage_Report_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showNotification("Batch triage CSV exported successfully!", "success");
+  }
+
+  // ---------------------------------------------------------------------------
+  // 5. Benchmarks Report Table & Interactive Figure Gallery
+  // ---------------------------------------------------------------------------
+  async function loadBenchmarks() {
+    let benchmarks = DEFAULT_BENCHMARKS;
+    try {
+      const res = await fetch("/api/benchmarks");
+      if (res.ok) {
+        benchmarks = await res.json();
+      }
+    } catch (err) {
+      // Use DEFAULT_BENCHMARKS
+    }
+    renderBenchmarksTable(benchmarks);
+  }
+
+  function renderBenchmarksTable(data) {
+    const tbody = document.getElementById("benchmarks-table-body");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    data.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-800/40 transition border-b border-slate-800/60";
+      
+      const acc = typeof r.Accuracy === "number" ? (r.Accuracy * 100).toFixed(2) + "%" : r.Accuracy;
+      const prec = typeof r.Precision === "number" ? (r.Precision * 100).toFixed(2) + "%" : r.Precision;
+      const rec = typeof r.Recall === "number" ? (r.Recall * 100).toFixed(2) + "%" : r.Recall;
+      const f1 = typeof r.F1_Score === "number" ? (r.F1_Score * 100).toFixed(2) + "%" : r.F1_Score;
+      const roc = typeof r.ROC_AUC === "number" ? r.ROC_AUC.toFixed(4) : r.ROC_AUC;
+      const pr = typeof r.PR_AUC === "number" ? r.PR_AUC.toFixed(4) : r.PR_AUC;
+
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-bold text-white">${r.Model}</td>
+        <td class="py-3 px-4 text-xs text-slate-400">${r.Paradigm}</td>
+        <td class="py-3 px-4 font-mono font-bold text-teal-400">${acc}</td>
+        <td class="py-3 px-4 font-mono text-slate-300">${prec}</td>
+        <td class="py-3 px-4 font-mono text-slate-300">${rec}</td>
+        <td class="py-3 px-4 font-mono font-bold text-emerald-400">${f1}</td>
+        <td class="py-3 px-4 font-mono text-slate-400">${roc}</td>
+        <td class="py-3 px-4 font-mono text-slate-400">${pr}</td>
+        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20">${r.Status || "Ready"}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderFiguresGallery() {
+    const container = document.getElementById("figures-gallery");
+    if (!container) return;
+    container.innerHTML = "";
+
+    BENCHMARK_FIGURES.forEach(fig => {
+      const card = document.createElement("div");
+      card.className = "bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-lg hover:border-teal-500/50 transition cursor-pointer flex flex-col";
+      
+      const primarySrc = `/figures/${fig.id}`;
+      const fallbackSrc = `outputs/figures/${fig.id}`;
+
+      card.onclick = () => openImageModal(primarySrc, fallbackSrc, fig.title);
+
+      card.innerHTML = `
+        <div class="h-44 bg-slate-950 flex items-center justify-center overflow-hidden border-b border-slate-800 p-2 relative group">
+          <img src="${primarySrc}" onerror="this.onerror=null; this.src='${fallbackSrc}';" alt="${fig.title}" class="max-h-full object-contain transition duration-300 group-hover:scale-105">
+          <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-teal-400 font-bold text-xs space-x-1">
+            <span>🔍 Click to Enlarge</span>
+          </div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col justify-between space-y-1">
+          <h5 class="font-bold text-white text-xs leading-snug">${fig.title}</h5>
+          <p class="text-[11px] text-slate-400 leading-tight">${fig.desc}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function openImageModal(src1, src2, title) {
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalTitle = document.getElementById("modal-title");
+    if (!modal || !modalImg) return;
+
+    modalTitle.textContent = title;
+    modalImg.src = src1;
+    modalImg.onerror = () => { modalImg.src = src2; };
+    modal.classList.remove("hidden");
+  }
+
+  function closeImageModal() {
+    const modal = document.getElementById("image-modal");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  // Export functions to window for direct HTML onclick triggers
+  window.initApp = initApp;
+  window.switchTab = switchTab;
+  window.toggleRole = toggleRole;
+  window.pasteFromClipboard = pasteFromClipboard;
+  window.loadSampleUrl = loadSampleUrl;
+  window.handleScanSubmit = handleScanSubmit;
+  window.loadSampleBatch = loadSampleBatch;
+  window.executeBatchScan = executeBatchScan;
+  window.downloadBatchCSV = downloadBatchCSV;
+  window.openImageModal = openImageModal;
+  window.closeImageModal = closeImageModal;
+  window.showNotification = showNotification;
+}
+
+  </script>
+</body>
+</html>

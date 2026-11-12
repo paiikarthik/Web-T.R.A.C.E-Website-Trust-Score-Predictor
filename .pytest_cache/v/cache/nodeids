@@ -1,0 +1,9 @@
+[
+  "test_feature_parity.py::test_app_and_training_feature_parity",
+  "test_feature_parity.py::test_end_to_end_predictions",
+  "test_feature_parity.py::test_feature_list_artifact_exists",
+  "test_feature_parity.py::test_flask_api_health_endpoint",
+  "test_feature_parity.py::test_flask_api_input_validation",
+  "test_feature_parity.py::test_free_host_detection_and_capping",
+  "test_feature_parity.py::test_no_shortcut_features_in_general_model"
+]

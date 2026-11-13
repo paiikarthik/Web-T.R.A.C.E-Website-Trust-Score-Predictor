@@ -56,6 +56,7 @@ class SoftVotingEnsemblePipeline:
     Calibrated Heterogeneous Soft-Voting Ensemble.
     Combines Random Forest (35%), XGBoost (45%), and DeepMLP (20%)
     with Isotonic probability calibration and optimal PR-curve thresholding.
+    Robustly aligns feature dimensions for sub-models with 37 or 38 features.
     """
 
     def __init__(self, rf, xgb, mlp, calibrator, scaler, weights=(0.35, 0.45, 0.20), threshold=0.3882):
@@ -66,12 +67,47 @@ class SoftVotingEnsemblePipeline:
         self.scaler = scaler
         self.w = weights
         self.threshold = threshold
+        self.feature_names_in_ = np.array(FEATURE_COLUMNS)
+
+    @staticmethod
+    def _slice_features_for(model, X: pd.DataFrame):
+        if not isinstance(X, pd.DataFrame):
+            return X
+        expected_cols = None
+        if hasattr(model, "feature_names_in_"):
+            expected_cols = list(model.feature_names_in_)
+        elif hasattr(model, "named_steps") and "preprocess" in model.named_steps:
+            prep = model.named_steps["preprocess"]
+            if hasattr(prep, "feature_names_in_"):
+                expected_cols = list(prep.feature_names_in_)
+            elif hasattr(prep, "named_steps") and "imputer" in prep.named_steps:
+                expected_cols = getattr(prep.named_steps["imputer"], "feature_names_in_", None)
+        
+        if expected_cols is not None:
+            matched = [c for c in expected_cols if c in X.columns]
+            df_out = X[matched].copy()
+            for c in expected_cols:
+                if c not in df_out.columns:
+                    df_out[c] = 0.0
+            return df_out[expected_cols]
+        return X
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
-        p_rf = self.rf.predict_proba(X)[:, 1]
-        p_xgb = self.xgb.predict_proba(X)[:, 1]
-        X_scaled = self.scaler.transform(X) if self.scaler else X.values
-        p_mlp = self.mlp.predict_proba(X_scaled)[:, 1]
+        # Align features for Random Forest
+        X_rf = self._slice_features_for(self.rf, X)
+        p_rf = self.rf.predict_proba(X_rf)[:, 1]
+
+        # Align features for XGBoost
+        X_xgb = self._slice_features_for(self.xgb, X)
+        p_xgb = self.xgb.predict_proba(X_xgb)[:, 1]
+
+        # Align features for DeepMLP
+        X_mlp_df = self._slice_features_for(self.mlp, X)
+        if hasattr(self.mlp, "steps") or hasattr(self.mlp, "named_steps"):
+            p_mlp = self.mlp.predict_proba(X_mlp_df)[:, 1]
+        else:
+            X_scaled = self.scaler.transform(X) if (self.scaler and hasattr(self.scaler, "transform") and getattr(self.scaler, "n_features_in_", 0) == X.shape[1]) else X_mlp_df.values
+            p_mlp = self.mlp.predict_proba(X_scaled)[:, 1]
 
         p_raw = self.w[0] * p_rf + self.w[1] * p_xgb + self.w[2] * p_mlp
         if self.calibrator is not None:
@@ -518,25 +554,74 @@ def explain_prediction_shap(feat_df: pd.DataFrame, prob_phish: float) -> List[Di
     """
     Computes true SHAP feature attributions using the XGBoost model
     and maps the top driving features to plain-English sentences.
+    Falls back gracefully to domain feature attribution if SHAP is unavailable.
     """
     global _TREE_EXPLAINER
-    if _TREE_EXPLAINER is None:
-        xgb = get_model("ML_XGBoost")
-        _TREE_EXPLAINER = shap.TreeExplainer(xgb)
-
+    shap_vals = None
     try:
-        shap_vals = _TREE_EXPLAINER(feat_df).values[0]
+        if _TREE_EXPLAINER is None:
+            xgb = get_model("ML_XGBoost")
+            underlying = xgb.named_steps["model"] if hasattr(xgb, "named_steps") and "model" in xgb.named_steps else xgb
+            _TREE_EXPLAINER = shap.TreeExplainer(underlying)
+
+        if _TREE_EXPLAINER is not None and _TREE_EXPLAINER != "UNAVAILABLE":
+            underlying_tree = getattr(_TREE_EXPLAINER, "model", None)
+            expected = getattr(underlying_tree, "feature_names", None)
+            if expected is not None:
+                sub_df = feat_df[[c for c in expected if c in feat_df.columns]].copy()
+                for c in expected:
+                    if c not in sub_df.columns:
+                        sub_df[c] = 0.0
+                sub_df = sub_df[expected]
+            else:
+                sub_df = feat_df
+            shap_vals = _TREE_EXPLAINER(sub_df).values[0]
     except Exception:
-        # Fast fallback: heuristic magnitude
-        shap_vals = np.zeros(len(FEATURE_COLUMNS))
+        shap_vals = None
 
-    # Pair features with their SHAP values and raw values
     contributions = []
-    for col, sv in zip(FEATURE_COLUMNS, shap_vals):
-        val = feat_df[col].values[0]
-        contributions.append((col, float(sv), val))
+    if shap_vals is not None and len(shap_vals) > 0:
+        for col, sv in zip(feat_df.columns[:len(shap_vals)], shap_vals):
+            val = feat_df[col].values[0] if col in feat_df.columns else 0.0
+            contributions.append((col, float(sv), val))
+    else:
+        # Robust heuristic domain attribution
+        heuristic_weights = {
+            "brand_homoglyph_typosquat": 1.8,
+            "brand_in_subdomain": 1.6,
+            "IsDomainIP": 1.5,
+            "is_susp_tld": 1.3,
+            "has_kw": 0.9,
+            "kw_count": 0.8,
+            "is_free_host": 0.7,
+            "brand_in_path_diff_domain": 0.9,
+            "HasObfuscation": 0.8,
+            "NoOfSubDomain": 0.5,
+            "netloc_entropy": 0.4,
+            "digit_ratio_domain": 0.5,
+            "hyphen_domain": 0.4,
+            "DomainLength": 0.3,
+            "ngram_prob": 1.2,
+        }
+        for col in FEATURE_COLUMNS:
+            val = float(feat_df[col].values[0]) if col in feat_df.columns else 0.0
+            if col == "ngram_prob":
+                sv = (val - 0.50) * 2.0
+            elif col == "netloc_entropy":
+                sv = (val - 3.2) * 0.5 if val > 3.5 else (-0.3 if val < 2.5 else 0.0)
+            elif col == "DomainLength":
+                sv = (val - 25.0) * 0.02 if val > 30 else (-0.2 if val < 15 else 0.0)
+            elif col in heuristic_weights:
+                sv = heuristic_weights[col] if val > 0 else (-0.2 if prob_phish < 0.30 else 0.0)
+            elif col == "kw_count":
+                sv = val * 0.5 if val > 0 else 0.0
+            elif col == "NoOfSubDomain":
+                sv = (val - 1) * 0.4 if val > 2 else (-0.1 if val <= 1 else 0.0)
+            else:
+                sv = 0.0
+            contributions.append((col, sv, val))
 
-    # Sort by absolute SHAP attribution
+    # Sort by absolute SHAP / heuristic attribution
     contributions.sort(key=lambda x: abs(x[1]), reverse=True)
 
     factors = []

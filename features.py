@@ -245,6 +245,8 @@ def parse_url_components(raw_url: str):
 
     parsed = urlparse(url_str)
     netloc = parsed.netloc or parsed.path.split("/")[0]
+    if "@" in netloc:
+        netloc = netloc.split("@")[-1]
     if ":" in netloc:
         netloc = netloc.split(":")[0]
     netloc_lower = netloc.lower().strip()
@@ -349,8 +351,10 @@ def extract_features(raw_url: str, include_path_query: bool = False) -> dict[str
     subdomain_parts = [p for p in subdomain.split(".") if p]
     no_of_subdomains = len(subdomain_parts)
     
-    obf_chars = re.findall(r"[%@~]", url_str)
-    has_obf = 1 if len(obf_chars) > 0 else 0
+    # HasObfuscation & NoOfObfuscatedChar: percent-encoded hex sequences (%XX) matching PhiUSIIL
+    hex_escapes = re.findall(r"%[0-9a-fA-F]{2}", url_str)
+    no_of_obfuscated_char = len(hex_escapes) * 3
+    has_obf = 1 if len(hex_escapes) > 0 else 0
     
     netloc_ent = shannon_entropy(netloc)
     hyphen_dom = netloc.count("-")
@@ -410,7 +414,7 @@ def extract_features(raw_url: str, include_path_query: bool = False) -> dict[str
         "TLDLength": len(suffix),
         "NoOfSubDomain": no_of_subdomains,
         "HasObfuscation": has_obf,
-        "NoOfObfuscatedChar": len(obf_chars),
+        "NoOfObfuscatedChar": no_of_obfuscated_char,
         "netloc_entropy": round(netloc_ent, 4),
         "hyphen_domain": hyphen_dom,
         "dot_domain": dot_dom,

@@ -549,6 +549,21 @@ FEATURE_EXPLANATION_MAP = {
     ),
 }
 
+TRUST_TITLES: Dict[str, str] = {
+    "NoOfSubDomain": "Standard Subdomain Hierarchy",
+    "DomainLength": "Standard Domain Length",
+    "IsDomainIP": "Standard DNS Domain Name",
+    "is_susp_tld": "Reputable Top-Level Domain",
+    "netloc_entropy": "Normal Domain Entropy",
+    "ngram_prob": "Normal Host Character Flow",
+    "kw_count": "Zero Credential Lure Tokens",
+    "has_kw": "Clean Domain Tokens",
+    "is_free_host": "Dedicated Domain Infrastructure",
+    "brand_in_subdomain": "Zero Brand Impersonation",
+    "brand_homoglyph_typosquat": "Authentic Brand Spelling",
+    "brand_in_path_diff_domain": "Standard Path Identity",
+}
+
 
 def explain_prediction_shap(feat_df: pd.DataFrame, prob_phish: float) -> List[Dict[str, Any]]:
     """
@@ -642,9 +657,10 @@ def explain_prediction_shap(feat_df: pd.DataFrame, prob_phish: float) -> List[Di
                     "shap_contribution": round(sv, 4),
                 })
             elif sv < -0.1 and prob_phish < 0.40 and len(factors) < 3:
+                safe_title = TRUST_TITLES.get(col, f"Standard {col}")
                 factors.append({
                     "feature": col,
-                    "title": title,
+                    "title": safe_title,
                     "detail": desc_neg,
                     "direction": "Trust Factor",
                     "severity": "SAFE",
